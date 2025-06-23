@@ -176,8 +176,34 @@
 
 /* Resume template enhancements */
 .resume-template {
-  line-height: 1.6;
+  line-height: 1.4;
   letter-spacing: 0.01em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: black !important;
+  background: white !important;
+}
+
+.resume-template * {
+  color: black !important;
+}
+
+.resume-template h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.resume-template h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid black;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
+  margin-top: 1.5rem;
 }
 
 .resume-section {
@@ -185,16 +211,47 @@
   page-break-inside: avoid;
 }
 
-.resume-section h2 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
 .resume-item {
   margin-bottom: 1rem;
   break-inside: avoid;
+}
+
+/* Print optimizations */
+@media print {
+  .resume-template {
+    font-size: 11pt;
+    line-height: 1.3;
+    max-width: none;
+    margin: 0;
+    padding: 0.5in;
+  }
+  
+  .resume-template h1 {
+    font-size: 18pt;
+    margin-bottom: 6pt;
+  }
+  
+  .resume-template h2 {
+    font-size: 12pt;
+    margin-top: 12pt;
+    margin-bottom: 6pt;
+  }
+  
+  .resume-template .text-sm {
+    font-size: 9pt;
+  }
+  
+  .resume-template .mb-6 {
+    margin-bottom: 8pt;
+  }
+  
+  .resume-template .mb-4 {
+    margin-bottom: 6pt;
+  }
+  
+  .resume-template .mb-8 {
+    margin-bottom: 12pt;
+  }
 }
 
 /* Enhanced spacing and alignment */
