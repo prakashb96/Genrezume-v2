@@ -9,7 +9,7 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
   const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-white p-8 text-slate-900">
+    <div className="bg-gradient-to-br from-purple-50 to-white p-8 text-slate-900 resume-template" id="resume-preview">
       {/* Creative Header */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-accent to-purple-600 p-6 mb-6 text-white">
         <div className="flex items-center space-x-6">
@@ -152,11 +152,13 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
               </div>
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <div className="flex flex-wrap gap-2">
-                  {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools].map((skill, index) => (
-                    <span key={index} className="bg-purple-100 text-accent px-3 py-1 rounded-full text-sm font-medium">
-                      {skill}
-                    </span>
-                  ))}
+                  {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
+                    .filter(Boolean)
+                    .map((skill, index) => (
+                      <span key={index} className="bg-purple-100 text-accent px-3 py-1 rounded-full text-sm font-medium">
+                        {skill}
+                      </span>
+                    ))}
                 </div>
               </div>
             </div>

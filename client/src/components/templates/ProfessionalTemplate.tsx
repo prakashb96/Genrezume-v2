@@ -9,7 +9,7 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
   const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
 
   return (
-    <div className="bg-white text-slate-900">
+    <div className="bg-white text-slate-900 resume-template" id="resume-preview">
       {/* Header with sidebar layout */}
       <div className="flex">
         {/* Left Sidebar */}
@@ -69,9 +69,11 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
             <div className="mb-6">
               <h3 className="text-sm font-bold mb-3 text-slate-300">SKILLS</h3>
               <div className="space-y-2">
-                {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools].map((skill, index) => (
-                  <div key={index} className="text-sm">{skill}</div>
-                ))}
+                {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
+                  .filter(Boolean)
+                  .map((skill, index) => (
+                    <div key={index} className="text-sm bg-slate-700 px-2 py-1 rounded text-white">{skill}</div>
+                  ))}
               </div>
             </div>
           )}
@@ -80,11 +82,11 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
           {languages && languages.length > 0 && (
             <div className="mb-6">
               <h3 className="text-sm font-bold mb-3 text-slate-300">LANGUAGES</h3>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {languages.map((lang) => (
-                  <div key={lang.id} className="text-sm">
-                    <div className="font-medium">{lang.language}</div>
-                    <div className="text-slate-400 text-xs">{lang.proficiency}</div>
+                  <div key={lang.id} className="text-sm bg-slate-700 p-2 rounded">
+                    <div className="font-medium text-white">{lang.language}</div>
+                    <div className="text-slate-300 text-xs">{lang.proficiency}</div>
                   </div>
                 ))}
               </div>
@@ -97,7 +99,7 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
               <h3 className="text-sm font-bold mb-3 text-slate-300">CERTIFICATIONS</h3>
               <div className="space-y-3">
                 {certifications.map((cert) => (
-                  <div key={cert.id} className="text-sm">
+                  <div key={cert.id} className="text-sm bg-slate-700 p-2 rounded">
                     <div className="font-medium">{cert.name}</div>
                     <div className="text-slate-400 text-xs">{cert.issuer}</div>
                     <div className="text-slate-400 text-xs">{cert.date}</div>

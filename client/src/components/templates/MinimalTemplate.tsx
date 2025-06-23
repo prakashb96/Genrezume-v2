@@ -8,7 +8,7 @@ export default function MinimalTemplate({ data }: MinimalTemplateProps) {
   const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
 
   return (
-    <div className="bg-white p-8 text-slate-900 max-w-none">
+    <div className="bg-white p-8 text-slate-900 max-w-none resume-template" id="resume-preview">
       {/* Minimal Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-light text-slate-900 mb-2">
@@ -114,9 +114,13 @@ export default function MinimalTemplate({ data }: MinimalTemplateProps) {
           <h2 className="text-xl font-light text-slate-900 mb-4 pb-2 border-b border-slate-200">
             Skills
           </h2>
-          <p className="text-slate-700">
-            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools].join(" • ")}
-          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
+              .filter(Boolean)
+              .map((skill, index) => (
+                <div key={index} className="text-slate-700 py-1">{skill}</div>
+              ))}
+          </div>
         </div>
       )}
 

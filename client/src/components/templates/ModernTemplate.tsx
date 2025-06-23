@@ -9,7 +9,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
   const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
 
   return (
-    <div className="bg-white p-8 text-slate-900">
+    <div className="bg-white p-8 text-slate-900 resume-template" id="resume-preview">
       {/* Header Section */}
       <div className="border-b-2 border-primary pb-6 mb-6">
         <div className="flex items-start space-x-6">
@@ -69,7 +69,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
 
       {/* Profile Summary */}
       {profileSummary?.summary && (
-        <div className="mb-6">
+        <div className="mb-6 resume-section">
           <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
             <div className="w-1 h-6 bg-primary mr-3"></div>
             PROFILE SUMMARY
@@ -80,7 +80,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
 
       {/* Education */}
       {education && education.length > 0 && (
-        <div className="mb-6">
+        <div className="mb-6 resume-section">
           <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
             <div className="w-1 h-6 bg-primary mr-3"></div>
             EDUCATION
@@ -107,7 +107,7 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
 
       {/* Experience */}
       {experience && experience.length > 0 && (
-        <div className="mb-6">
+        <div className="mb-6 resume-section">
           <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
             <div className="w-1 h-6 bg-primary mr-3"></div>
             EXPERIENCE
@@ -180,12 +180,14 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
             <div className="w-1 h-6 bg-primary mr-3"></div>
             TECHNICAL SKILLS
           </h2>
-          <div className="grid grid-cols-2 gap-2">
-            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools].map((skill, index) => (
-              <div key={index} className="bg-slate-100 px-3 py-1 rounded text-sm text-slate-700">
-                {skill}
-              </div>
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
+              .filter(Boolean)
+              .map((skill, index) => (
+                <div key={index} className="bg-slate-100 px-3 py-1 rounded text-sm text-slate-700">
+                  {skill}
+                </div>
+              ))}
           </div>
         </div>
       )}
@@ -197,16 +199,21 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
             <div className="w-1 h-6 bg-primary mr-3"></div>
             CERTIFICATIONS
           </h2>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {certifications.map((cert) => (
-              <div key={cert.id}>
-                <div className="flex justify-between items-start">
+              <div key={cert.id} className="p-4 bg-slate-50 rounded border-l-4 border-primary">
+                <div className="flex justify-between items-start mb-2">
                   <h3 className="font-medium text-textprimary">{cert.name}</h3>
-                  <span className="text-sm text-slate-600">{cert.date}</span>
+                  <span className="text-sm text-slate-600 bg-slate-200 px-2 py-1 rounded">{cert.date}</span>
                 </div>
-                <p className="text-slate-600 text-sm">{cert.issuer}</p>
+                <p className="text-slate-600 text-sm font-medium">{cert.issuer}</p>
                 {cert.credentialId && (
-                  <p className="text-slate-600 text-sm">ID: {cert.credentialId}</p>
+                  <p className="text-slate-600 text-xs mt-1">Credential ID: {cert.credentialId}</p>
+                )}
+                {cert.url && (
+                  <a href={cert.url} className="text-primary text-xs hover:underline mt-1 inline-block">
+                    View Certificate
+                  </a>
                 )}
               </div>
             ))}
@@ -221,11 +228,11 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
             <div className="w-1 h-6 bg-primary mr-3"></div>
             LANGUAGES
           </h2>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-3">
             {languages.map((lang) => (
-              <div key={lang.id} className="flex justify-between">
-                <span className="text-slate-700">{lang.language}</span>
-                <span className="text-slate-600 text-sm">{lang.proficiency}</span>
+              <div key={lang.id} className="flex justify-between items-center p-3 bg-slate-50 rounded">
+                <span className="text-slate-700 font-medium">{lang.language}</span>
+                <span className="text-slate-600 text-sm bg-slate-200 px-2 py-1 rounded">{lang.proficiency}</span>
               </div>
             ))}
           </div>

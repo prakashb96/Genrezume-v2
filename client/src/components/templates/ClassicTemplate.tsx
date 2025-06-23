@@ -8,7 +8,7 @@ export default function ClassicTemplate({ data }: ClassicTemplateProps) {
   const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
 
   return (
-    <div className="bg-white p-8 text-slate-900 font-serif">
+    <div className="bg-white p-8 text-slate-900 font-serif resume-template" id="resume-preview">
       {/* Header */}
       <div className="text-center border-b-2 border-slate-700 pb-4 mb-6">
         <h1 className="text-3xl font-bold text-slate-900 mb-2">
@@ -89,8 +89,10 @@ export default function ClassicTemplate({ data }: ClassicTemplateProps) {
           <h2 className="text-lg font-bold text-slate-900 border-b border-slate-400 pb-1 mb-3">
             TECHNICAL SKILLS
           </h2>
-          <div className="text-slate-700">
-            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools].join(", ")}
+          <div className="text-slate-700 leading-relaxed">
+            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
+              .filter(Boolean)
+              .join(" • ")}
           </div>
         </div>
       )}
