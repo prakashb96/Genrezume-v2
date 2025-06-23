@@ -1,0 +1,190 @@
+Prompt:
+
+I am upgrading my existing resume builder project (currently built in HTML, CSS, and JavaScript) into a professional, full-featured React.js + TailwindCSS web application. The goal is to help freshers create resumes that are recruiter-approved, follow the correct section order, and are formatted to stand out.
+
+Below are the exact goals, tech stack, and required features I want the upgraded app to support:
+
+🎯 Project Goal
+Upgrade the current resume builder to:
+
+Help freshers create recruiter-friendly resumes
+
+Provide multiple templates to choose from (at least 5 planned)
+
+Validate all form input with required fields
+
+Offer user login and resume saving
+
+Ensure the resume is structured in a correct fixed order
+
+Be fully responsive across all screen sizes
+
+Enable live preview and PDF export
+
+🛠 Technology Stack
+Frontend: React.js (Functional Components + Hooks)
+
+Styling: TailwindCSS
+
+Routing: React Router DOM
+
+Form Handling: react-hook-form (for validation)
+
+Authentication: Firebase Authentication (Email/Password + Google Sign-In)
+
+Database (Optional): Firebase Firestore (for saving resumes) or LocalStorage (for guest users)
+
+PDF Export: html2canvas + jsPDF OR react-to-print
+
+Version Control: Git & GitHub
+
+🧩 Functionality Breakdown
+1. Home Page
+Landing page introducing Genrezume
+
+Features:
+
+CTA button: “Let’s Create”
+
+About Us + Contact Us sections
+
+Buttons for Login and Signup
+
+2. User Authentication
+Login/Signup using Firebase Authentication
+
+Supports Google and Email/Password methods
+
+Auth state managed using React Context
+
+Routes like /builder and /template protected using a PrivateRoute component
+
+3. Resume Builder (Multi-Step Form)
+Each section is a separate React component:
+
+Personal Details
+
+Profile Summary
+
+Experience
+
+Education / Courses
+
+Skills
+
+Certifications
+
+Languages
+
+Hobbies
+
+References
+
+Features:
+
+Users can only proceed if mandatory fields are filled
+
+Smooth transitions between steps
+
+Real-time preview powered by shared state/context
+
+4. Form Validation
+Use react-hook-form for clean input handling
+
+Error messages for missing/invalid fields
+
+Tailwind visual indicators (border-red-500, etc.)
+
+5. Responsive Design
+Mobile-first layout using Tailwind’s sm: / md: / lg: breakpoints
+
+Collapsible preview on mobile view
+
+Flex/grid for layout adjustments
+
+6. Multiple Resume Templates
+Build 5 templates, each showing how sections are arranged
+
+Let users select template via dropdown or card preview
+
+Real-time rendering of the selected template
+
+Styles:
+
+Classic: Clean, traditional
+
+Modern: Bold headers, color accents
+
+Creative: Visually rich, modern typography
+
+✨ Note: I will provide an image for each template showing how the details are arranged in that layout
+
+7. Live Preview + PDF Export
+As the user fills the form, the preview updates live
+
+Users can export their resume to PDF using:
+
+html2canvas + jsPDF, OR
+
+react-to-print
+
+Add a “Download as PDF” button
+
+8. Data Persistence
+Resume data stored in:
+
+LocalStorage for guest users
+
+Firebase Firestore for logged-in users
+
+Optional features:
+
+Resume editing
+
+Resume version history
+
+9. Resume Section Order Enforcement
+Enforce this fixed order for all resumes:
+
+Name + Contact Info
+
+Profile Summary
+
+Education
+
+Experience
+
+Projects (if added)
+
+Skills
+
+Certifications
+
+Languages
+
+Hobbies
+
+References
+
+No drag-and-drop (to avoid confusion for freshers)
+
+Include tooltips and helper text for each section
+
+Will include illustrations for each template showing how these fields appear in the final layout
+
+✅ Final Outcome
+A polished, modern, and beginner-friendly resume builder that:
+
+Helps users build resumes in correct format
+
+Prevents input errors
+
+Works well on all devices
+
+Offers multiple visual templates
+
+Provides a downloadable PDF
+
+Supports login and data persistence
+
+P
