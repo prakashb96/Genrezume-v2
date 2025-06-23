@@ -38,42 +38,62 @@ export const profileSummarySchema = z.object({
 
 export const educationItemSchema = z.object({
   id: z.string(),
-  institution: z.string().min(1, "Institution is required"),
-  degree: z.string().min(1, "Degree is required"),
-  field: z.string().optional(),
+  collegeName: z.string().min(1, "College name is required"),
+  degreeName: z.string().min(1, "Degree name is required"),
+  cgpa: z.string().optional(),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().optional(),
-  gpa: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+});
+
+export const internshipItemSchema = z.object({
+  id: z.string(),
+  companyName: z.string().min(1, "Company name is required"),
+  roleName: z.string().min(1, "Role name is required"),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
   description: z.string().optional(),
 });
 
-export const experienceItemSchema = z.object({
+export const extracurricularItemSchema = z.object({
   id: z.string(),
-  company: z.string().min(1, "Company is required"),
-  position: z.string().min(1, "Position is required"),
+  organizationName: z.string().min(1, "Organization name is required"),
+  roleName: z.string().min(1, "Role name is required"),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().optional(),
-  current: z.boolean().default(false),
   description: z.string().optional(),
-  achievements: z.array(z.string()).default([]),
 });
 
 export const projectItemSchema = z.object({
   id: z.string(),
-  name: z.string().min(1, "Project name is required"),
+  projectName: z.string().min(1, "Project name is required"),
+  technologyStack: z.string().min(1, "Technology stack is required"),
   description: z.string().min(1, "Project description is required"),
-  technologies: z.array(z.string()).default([]),
+  keyPoints: z.array(z.string()).default([]),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
-  url: z.string().url().optional().or(z.literal("")),
-  github: z.string().url().optional().or(z.literal("")),
+  downloadLink: z.string().optional(),
 });
 
-export const skillsSchema = z.object({
-  technical: z.array(z.string()).default([]),
+export const courseworkSkillsSchema = z.object({
+  dataStructures: z.boolean().default(false),
+  networkSecurity: z.boolean().default(false),
+  artificialIntelligence: z.boolean().default(false),
+  webDevelopment: z.boolean().default(false),
+  operatingSystems: z.boolean().default(false),
+  databaseManagement: z.boolean().default(false),
+  oopsConceptsAdvanced: z.boolean().default(false),
+  androidDevelopment: z.boolean().default(false),
+  systemDesign: z.boolean().default(false),
+});
+
+export const technicalSkillsSchema = z.object({
   languages: z.array(z.string()).default([]),
-  frameworks: z.array(z.string()).default([]),
-  tools: z.array(z.string()).default([]),
+  developerTools: z.array(z.string()).default([]),
+  technologiesFrameworks: z.array(z.string()).default([]),
 });
 
 export const certificationItemSchema = z.object({
@@ -108,15 +128,13 @@ export const referenceItemSchema = z.object({
 
 export const resumeDataSchema = z.object({
   personalDetails: personalDetailsSchema,
-  profileSummary: profileSummarySchema,
   education: z.array(educationItemSchema).default([]),
-  experience: z.array(experienceItemSchema).default([]),
+  courseworkSkills: courseworkSkillsSchema,
   projects: z.array(projectItemSchema).default([]),
-  skills: skillsSchema,
+  internships: z.array(internshipItemSchema).default([]),
+  technicalSkills: technicalSkillsSchema,
+  extracurricular: z.array(extracurricularItemSchema).default([]),
   certifications: z.array(certificationItemSchema).default([]),
-  languages: z.array(languageItemSchema).default([]),
-  hobbies: hobbiesSchema,
-  references: z.array(referenceItemSchema).default([]),
 });
 
 export const insertUserSchema = createInsertSchema(users).omit({ id: true });
@@ -128,12 +146,10 @@ export type Resume = typeof resumes.$inferSelect;
 export type InsertResume = z.infer<typeof insertResumeSchema>;
 export type ResumeData = z.infer<typeof resumeDataSchema>;
 export type PersonalDetails = z.infer<typeof personalDetailsSchema>;
-export type ProfileSummary = z.infer<typeof profileSummarySchema>;
 export type EducationItem = z.infer<typeof educationItemSchema>;
-export type ExperienceItem = z.infer<typeof experienceItemSchema>;
+export type InternshipItem = z.infer<typeof internshipItemSchema>;
+export type ExtracurricularItem = z.infer<typeof extracurricularItemSchema>;
 export type ProjectItem = z.infer<typeof projectItemSchema>;
-export type Skills = z.infer<typeof skillsSchema>;
+export type CourseworkSkills = z.infer<typeof courseworkSkillsSchema>;
+export type TechnicalSkills = z.infer<typeof technicalSkillsSchema>;
 export type CertificationItem = z.infer<typeof certificationItemSchema>;
-export type LanguageItem = z.infer<typeof languageItemSchema>;
-export type Hobbies = z.infer<typeof hobbiesSchema>;
-export type ReferenceItem = z.infer<typeof referenceItemSchema>;

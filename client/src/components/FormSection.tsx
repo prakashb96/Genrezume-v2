@@ -3,53 +3,45 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PersonalDetailsForm from "./forms/PersonalDetailsForm";
-import ProfileSummaryForm from "./forms/ProfileSummaryForm";
 import EducationForm from "./forms/EducationForm";
-import ExperienceForm from "./forms/ExperienceForm";
+import CourseworkSkillsForm from "./forms/CourseworkSkillsForm";
 import ProjectsForm from "./forms/ProjectsForm";
-import SkillsForm from "./forms/SkillsForm";
+import InternshipForm from "./forms/InternshipForm";
+import TechnicalSkillsForm from "./forms/TechnicalSkillsForm";
+import ExtracurricularForm from "./forms/ExtracurricularForm";
 import CertificationsForm from "./forms/CertificationsForm";
-import LanguagesForm from "./forms/LanguagesForm";
-import HobbiesForm from "./forms/HobbiesForm";
-import ReferencesForm from "./forms/ReferencesForm";
 
 const STEP_COMPONENTS = {
   1: PersonalDetailsForm,
-  2: ProfileSummaryForm,
-  3: EducationForm,
-  4: ExperienceForm,
-  5: ProjectsForm,
-  6: SkillsForm,
-  7: CertificationsForm,
-  8: LanguagesForm,
-  9: HobbiesForm,
-  10: ReferencesForm,
+  2: EducationForm,
+  3: CourseworkSkillsForm,
+  4: ProjectsForm,
+  5: InternshipForm,
+  6: TechnicalSkillsForm,
+  7: ExtracurricularForm,
+  8: CertificationsForm,
 };
 
 const STEP_TITLES = {
   1: "Personal Details",
-  2: "Profile Summary",
-  3: "Education",
-  4: "Experience",
-  5: "Projects",
-  6: "Skills",
-  7: "Certifications",
-  8: "Languages",
-  9: "Hobbies",
-  10: "References",
+  2: "Education",
+  3: "Coursework / Skills",
+  4: "Projects",
+  5: "Internship",
+  6: "Technical Skills",
+  7: "Extracurricular",
+  8: "Certifications",
 };
 
 const STEP_DESCRIPTIONS = {
   1: "Start with your basic information. This will appear at the top of your resume.",
-  2: "Write a compelling summary that highlights your key qualifications and career goals.",
-  3: "Add your educational background, including degrees, certifications, and relevant coursework.",
-  4: "Detail your work experience, focusing on achievements and responsibilities.",
-  5: "Showcase your personal and professional projects that demonstrate your skills.",
-  6: "List your technical skills, programming languages, and tools you're proficient with.",
-  7: "Include any professional certifications or licenses you've earned.",
-  8: "Add languages you speak and your proficiency level in each.",
-  9: "Include hobbies and interests that showcase your personality and soft skills.",
-  10: "Add professional references who can vouch for your work and character.",
+  2: "Add your educational background including college details, degree, and CGPA.",
+  3: "Select the coursework and skills you've completed during your studies.",
+  4: "Showcase your personal and professional projects with technology stack and key points.",
+  5: "Detail your internship experience including company, role, and responsibilities.",
+  6: "List your technical skills including programming languages, tools, and frameworks.",
+  7: "Include extracurricular activities and leadership roles you've undertaken.",
+  8: "Add any professional certifications or licenses you've earned.",
 };
 
 const TEMPLATES = [
@@ -81,7 +73,7 @@ export default function FormSection() {
   };
 
   const getNextStepName = () => {
-    if (currentStep < 10) {
+    if (currentStep < 8) {
       return STEP_TITLES[(currentStep + 1) as keyof typeof STEP_TITLES];
     }
     return "Complete";
@@ -125,8 +117,8 @@ export default function FormSection() {
             <Button variant="outline">
               Save & Exit
             </Button>
-            <Button onClick={handleNext} disabled={currentStep === 10}>
-              Next: {getNextStepName()}
+            <Button onClick={handleNext} disabled={currentStep === 8}>
+              {currentStep === 8 ? "Complete Resume" : `Next: ${getNextStepName()}`}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

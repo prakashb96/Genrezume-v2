@@ -6,7 +6,7 @@ interface ModernTemplateProps {
 }
 
 export default function ModernTemplate({ data }: ModernTemplateProps) {
-  const { personalDetails, profileSummary, education, experience, projects, skills, certifications, languages, hobbies, references } = data;
+  const { personalDetails, education, projects, courseworkSkills, technicalSkills, internships, extracurricular, certifications } = data;
 
   return (
     <div className="bg-white p-8 text-slate-900 resume-template" id="resume-preview">
@@ -53,30 +53,19 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
               {personalDetails?.linkedin && (
                 <div className="flex items-center space-x-2">
                   <Linkedin className="text-primary w-4 h-4" />
-                  <span>{personalDetails.linkedin.replace("https://", "")}</span>
+                  <span>{personalDetails.linkedin}</span>
                 </div>
               )}
               {personalDetails?.website && (
                 <div className="flex items-center space-x-2">
                   <Globe className="text-primary w-4 h-4" />
-                  <span>{personalDetails.website.replace("https://", "")}</span>
+                  <span>{personalDetails.website}</span>
                 </div>
               )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Profile Summary */}
-      {profileSummary?.summary && (
-        <div className="mb-6 resume-section">
-          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
-            <div className="w-1 h-6 bg-primary mr-3"></div>
-            PROFILE SUMMARY
-          </h2>
-          <p className="text-slate-700 leading-relaxed">{profileSummary.summary}</p>
-        </div>
-      )}
 
       {/* Education */}
       {education && education.length > 0 && (
@@ -90,48 +79,38 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
               <div key={edu.id}>
                 <div className="flex justify-between items-start mb-1">
                   <h3 className="font-medium text-textprimary">
-                    {edu.degree} {edu.field && `in ${edu.field}`}
+                    {edu.degreeName}
                   </h3>
                   <span className="text-sm text-slate-600">
                     {edu.startDate} - {edu.endDate || "Present"}
                   </span>
                 </div>
-                <p className="text-slate-600 text-sm">{edu.institution}</p>
-                {edu.gpa && <p className="text-slate-600 text-sm">GPA: {edu.gpa}</p>}
-                {edu.description && <p className="text-slate-600 text-sm mt-1">{edu.description}</p>}
+                <p className="text-slate-600 text-sm">{edu.collegeName}</p>
+                {edu.cgpa && <p className="text-slate-600 text-sm">CGPA: {edu.cgpa}</p>}
+                {edu.city && edu.country && (
+                  <p className="text-slate-600 text-sm">{edu.city}, {edu.country}</p>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* Experience */}
-      {experience && experience.length > 0 && (
+      {/* Coursework & Skills */}
+      {courseworkSkills && (
         <div className="mb-6 resume-section">
           <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
             <div className="w-1 h-6 bg-primary mr-3"></div>
-            EXPERIENCE
+            RELEVANT COURSEWORK
           </h2>
-          <div className="space-y-4">
-            {experience.map((exp) => (
-              <div key={exp.id}>
-                <div className="flex justify-between items-start mb-1">
-                  <h3 className="font-medium text-textprimary">{exp.position}</h3>
-                  <span className="text-sm text-slate-600">
-                    {exp.startDate} - {exp.current ? "Present" : exp.endDate}
-                  </span>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {Object.entries(courseworkSkills)
+              .filter(([_, selected]) => selected)
+              .map(([course, _]) => (
+                <div key={course} className="bg-slate-100 px-3 py-1 rounded text-sm text-slate-700">
+                  {course.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                 </div>
-                <p className="text-slate-600 text-sm mb-2">{exp.company}</p>
-                {exp.description && <p className="text-slate-700 text-sm mb-2">{exp.description}</p>}
-                {exp.achievements && exp.achievements.length > 0 && (
-                  <ul className="text-sm text-slate-700 space-y-1">
-                    {exp.achievements.map((achievement, index) => (
-                      <li key={index}>• {achievement}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       )}
@@ -146,24 +125,24 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
           <div className="space-y-4">
             {projects.map((project) => (
               <div key={project.id}>
-                <h3 className="font-medium text-textprimary mb-1">{project.name}</h3>
+                <h3 className="font-medium text-textprimary mb-1">{project.projectName}</h3>
                 <div className="flex flex-wrap gap-2 mb-2">
-                  {project.technologies.map((tech) => (
-                    <span key={tech} className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
-                      {tech}
-                    </span>
-                  ))}
+                  <span className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-700">
+                    {project.technologyStack}
+                  </span>
                 </div>
                 <p className="text-slate-700 text-sm mb-2">{project.description}</p>
+                {project.keyPoints && project.keyPoints.length > 0 && (
+                  <ul className="text-sm text-slate-700 space-y-1 mb-2">
+                    {project.keyPoints.map((point, index) => (
+                      <li key={index}>• {point}</li>
+                    ))}
+                  </ul>
+                )}
                 <div className="flex space-x-4 text-sm text-slate-600">
-                  {project.url && (
-                    <a href={project.url} className="text-primary hover:underline">
-                      Live Demo
-                    </a>
-                  )}
-                  {project.github && (
-                    <a href={project.github} className="text-primary hover:underline">
-                      GitHub
+                  {project.downloadLink && (
+                    <a href={project.downloadLink} className="text-primary hover:underline">
+                      View Project
                     </a>
                   )}
                 </div>
@@ -173,21 +152,108 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
         </div>
       )}
 
-      {/* Skills */}
-      {skills && (skills.technical.length > 0 || skills.languages.length > 0 || skills.frameworks.length > 0 || skills.tools.length > 0) && (
+      {/* Internships */}
+      {internships && internships.length > 0 && (
+        <div className="mb-6 resume-section">
+          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
+            <div className="w-1 h-6 bg-primary mr-3"></div>
+            INTERNSHIP EXPERIENCE
+          </h2>
+          <div className="space-y-4">
+            {internships.map((internship) => (
+              <div key={internship.id}>
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-medium text-textprimary">{internship.role}</h3>
+                  <span className="text-sm text-slate-600">
+                    {internship.startDate} - {internship.endDate || "Present"}
+                  </span>
+                </div>
+                <p className="text-slate-600 text-sm mb-2">{internship.companyName}</p>
+                {internship.location && <p className="text-slate-600 text-sm mb-2">{internship.location}</p>}
+                <p className="text-slate-700 text-sm mb-2">{internship.description}</p>
+                {internship.keyPoints && internship.keyPoints.length > 0 && (
+                  <ul className="text-sm text-slate-700 space-y-1">
+                    {internship.keyPoints.map((point, index) => (
+                      <li key={index}>• {point}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Technical Skills */}
+      {technicalSkills && (
         <div className="mb-6">
           <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
             <div className="w-1 h-6 bg-primary mr-3"></div>
             TECHNICAL SKILLS
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {[...skills.technical, ...skills.languages, ...skills.frameworks, ...skills.tools]
-              .filter(Boolean)
-              .map((skill, index) => (
-                <div key={index} className="bg-slate-100 px-3 py-1 rounded text-sm text-slate-700">
-                  {skill}
+          <div className="space-y-2">
+            {technicalSkills.programmingLanguages && technicalSkills.programmingLanguages.length > 0 && (
+              <div>
+                <span className="font-medium text-slate-700">Programming Languages: </span>
+                <span className="text-slate-600">{technicalSkills.programmingLanguages.filter(Boolean).join(", ")}</span>
+              </div>
+            )}
+            {technicalSkills.frameworks && technicalSkills.frameworks.length > 0 && (
+              <div>
+                <span className="font-medium text-slate-700">Frameworks: </span>
+                <span className="text-slate-600">{technicalSkills.frameworks.filter(Boolean).join(", ")}</span>
+              </div>
+            )}
+            {technicalSkills.tools && technicalSkills.tools.length > 0 && (
+              <div>
+                <span className="font-medium text-slate-700">Tools: </span>
+                <span className="text-slate-600">{technicalSkills.tools.filter(Boolean).join(", ")}</span>
+              </div>
+            )}
+            {technicalSkills.databases && technicalSkills.databases.length > 0 && (
+              <div>
+                <span className="font-medium text-slate-700">Databases: </span>
+                <span className="text-slate-600">{technicalSkills.databases.filter(Boolean).join(", ")}</span>
+              </div>
+            )}
+            {technicalSkills.platforms && technicalSkills.platforms.length > 0 && (
+              <div>
+                <span className="font-medium text-slate-700">Platforms: </span>
+                <span className="text-slate-600">{technicalSkills.platforms.filter(Boolean).join(", ")}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Extracurricular Activities */}
+      {extracurricular && extracurricular.length > 0 && (
+        <div className="mb-6 resume-section">
+          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
+            <div className="w-1 h-6 bg-primary mr-3"></div>
+            EXTRACURRICULAR ACTIVITIES
+          </h2>
+          <div className="space-y-4">
+            {extracurricular.map((activity) => (
+              <div key={activity.id}>
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-medium text-textprimary">{activity.activityName}</h3>
+                  <span className="text-sm text-slate-600">
+                    {activity.startDate} - {activity.endDate || "Present"}
+                  </span>
                 </div>
-              ))}
+                <p className="text-slate-600 text-sm mb-1">{activity.role}</p>
+                {activity.organization && <p className="text-slate-600 text-sm mb-2">{activity.organization}</p>}
+                <p className="text-slate-700 text-sm mb-2">{activity.description}</p>
+                {activity.achievements && activity.achievements.length > 0 && (
+                  <ul className="text-sm text-slate-700 space-y-1">
+                    {activity.achievements.map((achievement, index) => (
+                      <li key={index}>• {achievement}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
@@ -203,68 +269,18 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
             {certifications.map((cert) => (
               <div key={cert.id} className="p-4 bg-slate-50 rounded border-l-4 border-primary">
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="font-medium text-textprimary">{cert.name}</h3>
-                  <span className="text-sm text-slate-600 bg-slate-200 px-2 py-1 rounded">{cert.date}</span>
+                  <h3 className="font-medium text-textprimary">{cert.certificationName}</h3>
+                  <span className="text-sm text-slate-600 bg-slate-200 px-2 py-1 rounded">{cert.issueDate}</span>
                 </div>
-                <p className="text-slate-600 text-sm font-medium">{cert.issuer}</p>
+                <p className="text-slate-600 text-sm font-medium">{cert.issuingOrganization}</p>
                 {cert.credentialId && (
                   <p className="text-slate-600 text-xs mt-1">Credential ID: {cert.credentialId}</p>
                 )}
-                {cert.url && (
-                  <a href={cert.url} className="text-primary text-xs hover:underline mt-1 inline-block">
+                {cert.verificationLink && (
+                  <a href={cert.verificationLink} className="text-primary text-xs hover:underline mt-1 inline-block">
                     View Certificate
                   </a>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Languages */}
-      {languages && languages.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
-            <div className="w-1 h-6 bg-primary mr-3"></div>
-            LANGUAGES
-          </h2>
-          <div className="space-y-3">
-            {languages.map((lang) => (
-              <div key={lang.id} className="flex justify-between items-center p-3 bg-slate-50 rounded">
-                <span className="text-slate-700 font-medium">{lang.language}</span>
-                <span className="text-slate-600 text-sm bg-slate-200 px-2 py-1 rounded">{lang.proficiency}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Hobbies */}
-      {hobbies?.hobbies && hobbies.hobbies.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
-            <div className="w-1 h-6 bg-primary mr-3"></div>
-            INTERESTS & HOBBIES
-          </h2>
-          <p className="text-slate-700">{hobbies.hobbies.join(", ")}</p>
-        </div>
-      )}
-
-      {/* References */}
-      {references && references.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold text-textprimary mb-3 flex items-center">
-            <div className="w-1 h-6 bg-primary mr-3"></div>
-            REFERENCES
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {references.map((ref) => (
-              <div key={ref.id} className="text-sm">
-                <h3 className="font-medium text-textprimary">{ref.name}</h3>
-                <p className="text-slate-600">{ref.title}</p>
-                <p className="text-slate-600">{ref.company}</p>
-                <p className="text-slate-600">{ref.email}</p>
-                <p className="text-slate-600">{ref.phone}</p>
               </div>
             ))}
           </div>
