@@ -2,15 +2,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personalDetailsSchema, PersonalDetails } from "@shared/schema";
 import { useResume } from "@/contexts/ResumeContext";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, Upload, X } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
 
 export default function PersonalDetailsForm() {
   const { state, updateData } = useResume();
   const personalDetails = state.resumeData.personalDetails || {};
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm<PersonalDetails>({
     resolver: zodResolver(personalDetailsSchema),
@@ -23,6 +25,19 @@ export default function PersonalDetailsForm() {
   useEffect(() => {
     updateData("personalDetails", watchedValues);
   }, [watchedValues, updateData]);
+
+  const handleFileUpload = (file: File, onChange: (value: string) => void) => {
+    if (file.size > 2 * 1024 * 1024) {
+      alert("File size must be less than 2MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      onChange(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <TooltipProvider>
@@ -201,25 +216,73 @@ export default function PersonalDetailsForm() {
                   </Tooltip>
                 </FormLabel>
                 <FormControl>
-                  <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer">
-                    <div className="text-3xl mb-2">📤</div>
-                    <p className="text-slate-600 text-sm">Click to upload or drag and drop</p>
-                    <p className="text-xs text-slate-500 mt-1">PNG, JPG up to 2MB</p>
+                  <div className="space-y-4">
+                    {field.value ? (
+                      <div className="relative w-32 h-32 mx-auto">
+                        <img
+                          src={field.value}
+                          alt="Profile preview"
+                          className="w-32 h-32 rounded-full object-cover border-2 border-slate-200"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute -top-2 -right-2 rounded-full w-8 h-8 p-0"
+                          onClick={() => field.onChange("")}
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div
+                        className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-primary transition-colors cursor-pointer"
+                        onClick={() => fileInputRef.current?.click()}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          e.currentTarget.classList.add('border-primary');
+                        }}
+                        onDragLeave={(e) => {
+                          e.preventDefault();
+                          e.currentTarget.classList.remove('border-primary');
+                        }}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          e.currentTarget.classList.remove('border-primary');
+                          const file = e.dataTransfer.files[0];
+                          if (file && file.type.startsWith('image/')) {
+                            handleFileUpload(file, field.onChange);
+                          }
+                        }}
+                      >
+                        <Upload className="w-8 h-8 mx-auto mb-2 text-slate-400" />
+                        <p className="text-slate-600 text-sm">Click to upload or drag and drop</p>
+                        <p className="text-xs text-slate-500 mt-1">PNG, JPG up to 2MB</p>
+                      </div>
+                    )}
                     <Input
+                      ref={fileInputRef}
                       type="file"
                       accept="image/*"
                       className="hidden"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            field.onChange(reader.result as string);
-                          };
-                          reader.readAsDataURL(file);
+                          handleFileUpload(file, field.onChange);
                         }
                       }}
                     />
+                    {!field.value && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="w-full"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Choose Photo
+                      </Button>
+                    )}
                   </div>
                 </FormControl>
                 <FormMessage />
