@@ -63,8 +63,9 @@ export function usePDFExport() {
         heightLeft -= pageHeight;
       }
 
-      // Generate filename
-      const defaultFilename = filename || `resume_${new Date().toISOString().split('T')[0]}.pdf`;
+      // Generate filename with timestamp
+      const timestamp = new Date().toISOString().split('T')[0] + '_' + Date.now();
+      const defaultFilename = filename || `resume_${timestamp}.pdf`;
       
       // Save the PDF
       pdf.save(defaultFilename);
