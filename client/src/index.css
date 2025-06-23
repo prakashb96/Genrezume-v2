@@ -178,13 +178,18 @@
 .resume-template {
   line-height: 1.4;
   letter-spacing: 0.01em;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   color: black !important;
   background: white !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 .resume-template * {
   color: black !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
 }
 
 .resume-template h1 {
@@ -216,6 +221,72 @@
   break-inside: avoid;
 }
 
+/* PDF Export Optimization */
+.resume-template {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: auto;
+}
+
+.resume-template h1,
+.resume-template h2,
+.resume-template h3,
+.resume-template p,
+.resume-template div {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.resume-template .grid {
+  display: grid;
+  gap: inherit;
+}
+
+.resume-template .flex {
+  display: flex;
+}
+
+.resume-template .text-center {
+  text-align: center;
+}
+
+.resume-template .justify-between {
+  justify-content: space-between;
+}
+
+.resume-template .items-start {
+  align-items: flex-start;
+}
+
+.resume-template .font-bold {
+  font-weight: 700;
+}
+
+.resume-template .font-semibold {
+  font-weight: 600;
+}
+
+.resume-template .italic {
+  font-style: italic;
+}
+
+.resume-template .uppercase {
+  text-transform: uppercase;
+}
+
+.resume-template .underline {
+  text-decoration: underline;
+}
+
+.resume-template .border-b {
+  border-bottom: 1px solid black;
+}
+
+.resume-template .border-black {
+  border-color: black;
+}
+
 /* Print optimizations */
 @media print {
   .resume-template {
@@ -224,17 +295,28 @@
     max-width: none;
     margin: 0;
     padding: 0.5in;
+    color: black !important;
+    background: white !important;
+  }
+  
+  .resume-template * {
+    color: black !important;
+    background: transparent !important;
   }
   
   .resume-template h1 {
     font-size: 18pt;
     margin-bottom: 6pt;
+    font-weight: 700;
   }
   
   .resume-template h2 {
     font-size: 12pt;
     margin-top: 12pt;
     margin-bottom: 6pt;
+    font-weight: 700;
+    border-bottom: 1px solid black;
+    padding-bottom: 2pt;
   }
   
   .resume-template .text-sm {
@@ -251,6 +333,12 @@
   
   .resume-template .mb-8 {
     margin-bottom: 12pt;
+  }
+  
+  .resume-template .grid-cols-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
 }
 

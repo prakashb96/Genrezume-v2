@@ -8,7 +8,13 @@ export default function ModernTemplate({ data }: ModernTemplateProps) {
   const { personalDetails, education, projects, courseworkSkills, technicalSkills, internships, extracurricular, certifications } = data;
 
   return (
-    <div className="bg-white p-8 max-w-4xl mx-auto text-black resume-template" id="resume-preview">
+    <div className="bg-white p-8 max-w-4xl mx-auto text-black resume-template" id="resume-preview" style={{
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      lineHeight: '1.4',
+      color: 'black',
+      backgroundColor: 'white',
+      fontSize: '14px'
+    }}>
       {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold uppercase tracking-wide mb-2">

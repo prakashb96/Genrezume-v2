@@ -10,57 +10,102 @@ export function usePDFExport() {
     }
 
     try {
-      // Configure html2canvas options for better quality
+      // Store original styles
+      const originalStyles = {
+        width: element.style.width,
+        height: element.style.height,
+        transform: element.style.transform,
+        maxWidth: element.style.maxWidth,
+      };
+
+      // Temporarily set styles for better PDF rendering
+      element.style.width = '210mm';
+      element.style.maxWidth = '210mm';
+      element.style.transform = 'scale(1)';
+      element.style.transformOrigin = 'top left';
+
+      // Wait for styles to apply
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Configure html2canvas with optimized settings for text clarity
       const canvas = await html2canvas(element, {
-        scale: 2, // Higher scale for better quality
+        scale: 3, // Higher scale for crisp text
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        width: element.scrollWidth,
-        height: element.scrollHeight,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
         scrollX: 0,
         scrollY: 0,
+        foreignObjectRendering: false, // Better text rendering
+        imageTimeout: 0,
+        removeContainer: true,
+        onclone: (clonedDoc) => {
+          // Ensure fonts are loaded in cloned document
+          const clonedElement = clonedDoc.getElementById('resume-preview');
+          if (clonedElement) {
+            clonedElement.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+            clonedElement.style.setProperty('-webkit-font-smoothing', 'antialiased');
+            clonedElement.style.color = 'black';
+            clonedElement.style.backgroundColor = 'white';
+          }
+        },
       });
 
-      // Calculate PDF dimensions (A4 format)
-      const imgWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
+      // Restore original styles
+      Object.assign(element.style, originalStyles);
 
-      // Create PDF
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
+      // A4 dimensions in mm
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      
+      // Calculate scaling to fit A4
+      const canvasAspectRatio = canvas.height / canvas.width;
+      const imgWidth = pdfWidth;
+      const imgHeight = imgWidth * canvasAspectRatio;
 
-      // Add first page
-      pdf.addImage(
-        canvas.toDataURL('image/png'),
-        'PNG',
-        0,
-        position,
-        imgWidth,
-        imgHeight,
-        undefined,
-        'FAST'
-      );
-      heightLeft -= pageHeight;
+      // Create PDF with high quality settings
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: false, // Better quality
+      });
 
-      // Add additional pages if content exceeds one page
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(
-          canvas.toDataURL('image/png'),
-          'PNG',
-          0,
-          position,
-          imgWidth,
-          imgHeight,
-          undefined,
-          'FAST'
-        );
-        heightLeft -= pageHeight;
+      // Convert canvas to high quality image - using PNG for better text clarity
+      const imgData = canvas.toDataURL('image/png');
+
+      // Add image to PDF
+      if (imgHeight <= pdfHeight) {
+        // Single page
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'SLOW');
+      } else {
+        // Multiple pages
+        let heightLeft = imgHeight;
+        let position = 0;
+        
+        while (heightLeft > 0) {
+          const pageHeight = Math.min(heightLeft, pdfHeight);
+          
+          if (position > 0) {
+            pdf.addPage();
+          }
+          
+          pdf.addImage(
+            imgData, 
+            'PNG', 
+            0, 
+            -position, 
+            imgWidth, 
+            imgHeight, 
+            undefined, 
+            'SLOW'
+          );
+          
+          heightLeft -= pdfHeight;
+          position += pdfHeight;
+        }
       }
 
       // Generate filename with timestamp
