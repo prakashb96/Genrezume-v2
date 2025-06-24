@@ -184,3 +184,6 @@ export type ProjectItem = z.infer<typeof projectItemSchema>;
 export type CourseworkSkills = z.infer<typeof courseworkSkillsSchema>;
 export type TechnicalSkills = z.infer<typeof technicalSkillsSchema>;
 export type CertificationItem = z.infer<typeof certificationItemSchema>;
+export type LanguageItem = z.infer<typeof languageItemSchema>;
+export type Hobbies = z.infer<typeof hobbiesSchema>;
+export type ReferenceItem = z.infer<typeof referenceItemSchema>;
