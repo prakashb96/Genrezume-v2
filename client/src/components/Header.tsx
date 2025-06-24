@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,15 +11,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FileText, Menu, User, LogOut } from "lucide-react";
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [location] = useLocation();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+  const handleLogout = () => {
+    window.location.href = "/api/logout";
   };
 
   return (
@@ -53,16 +49,16 @@ export default function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.photoURL || ""} alt={user.displayName || ""} />
+                        <AvatarImage src={user.profileImageUrl || ""} alt={`${user.firstName} ${user.lastName}` || ""} />
                         <AvatarFallback>
-                          {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
+                          {user.firstName?.charAt(0) || user.email?.charAt(0) || "U"}
                         </AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuItem className="flex flex-col items-start">
-                      <div className="font-medium">{user.displayName || "User"}</div>
+                      <div className="font-medium">{`${user.firstName || ""} ${user.lastName || ""}`.trim() || "User"}</div>
                       <div className="text-sm text-muted-foreground">{user.email}</div>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
@@ -78,12 +74,9 @@ export default function Header() {
               </div>
             ) : (
               <div className="flex items-center space-x-3">
-                <Link href="/login">
-                  <Button variant="outline">Sign In</Button>
-                </Link>
-                <Link href="/register">
-                  <Button>Get Started</Button>
-                </Link>
+                <Button variant="outline" onClick={() => window.location.href = "/api/login"}>
+                  Sign In
+                </Button>
               </div>
             )}
           </nav>

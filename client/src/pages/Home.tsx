@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, Users, Download, Sparkles, ArrowRight, Check } from "lucide-react";
@@ -65,9 +65,9 @@ export default function Home() {
             Our intuitive builder helps freshers craft resumes that stand out and get noticed.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href={user ? "/builder" : "/register"}>
+            <Link href="/builder">
               <Button size="lg" className="text-lg px-8 py-3">
-                {user ? "Continue Building" : "Get Started Free"}
+                Start Building Your Resume
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
@@ -209,9 +209,9 @@ export default function Home() {
           <p className="text-xl text-blue-100 mb-8">
             Join thousands of job seekers who have successfully created professional resumes with Genrezume.
           </p>
-          <Link href={user ? "/builder" : "/register"}>
+          <Link href="/builder">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-3">
-              {user ? "Continue Building" : "Start Building Now"}
+              Start Building Now
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </Link>
