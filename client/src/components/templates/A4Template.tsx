@@ -25,96 +25,100 @@ export default function A4Template({ data }: A4TemplateProps) {
     references = [] 
   } = data;
 
-  const printStyles = {
-    container: {
-      fontFamily: 'Inter, Arial, sans-serif',
-      lineHeight: '1.5',
-      color: '#000000',
-      backgroundColor: '#ffffff',
-      fontSize: '14px',
-      width: '210mm',
-      minHeight: '297mm',
-      padding: '40px',
-      margin: '0 auto',
-      boxSizing: 'border-box' as const,
-    },
-    sectionHeader: {
-      fontSize: '18px',
-      fontWeight: '600' as const,
-      color: '#1e293b',
-      borderBottom: '1px solid #e2e8f0',
-      paddingBottom: '5px',
-      marginBottom: '15px',
-      marginTop: '25px',
-    },
-    sectionContainer: {
-      marginBottom: '25px',
-    },
-  };
-
   return (
-    <div className="bg-white text-black resume-template" style={printStyles.container}>
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #2563eb', paddingBottom: '15px' }}>
+    <div
+      style={{
+        width: "210mm",
+        minHeight: "297mm",
+        padding: "15mm",
+        fontFamily: "'Arial', sans-serif",
+        fontSize: "10px",
+        lineHeight: "1.3",
+        color: "#000",
+        backgroundColor: "white",
+        margin: "0 auto",
+        boxSizing: "border-box",
+      }}
+    >
+      {/* Header with Name */}
+      <div style={{ textAlign: "center", marginBottom: "20px", borderBottom: "2px solid #000", paddingBottom: "10px" }}>
         <h1 style={{ 
-          fontSize: '28px', 
-          fontWeight: 'bold', 
-          margin: '0 0 8px 0',
-          color: '#1e293b'
+          fontSize: "24px", 
+          fontWeight: "bold", 
+          margin: "0",
+          letterSpacing: "2px",
+          textTransform: "uppercase"
         }}>
-          {personalDetails?.firstName || "Your"} {personalDetails?.lastName || "Name"}
+          {personalDetails?.firstName || "YOUR"} {personalDetails?.lastName || "NAME"}
         </h1>
-        <div style={{ fontSize: '16px', color: '#64748b', marginBottom: '10px' }}>
-          {personalDetails?.title || "Your Professional Title"}
+        <div style={{ fontSize: "12px", marginTop: "5px", display: "flex", justifyContent: "center", gap: "20px" }}>
+          {personalDetails?.email && <span>📧 {personalDetails.email}</span>}
+          {personalDetails?.phone && <span>📱 {personalDetails.phone}</span>}
+          {personalDetails?.location && <span>📍 {personalDetails.location}</span>}
         </div>
-        <div style={{ fontSize: '14px', color: '#64748b' }}>
-          {personalDetails?.email && <span>{personalDetails.email}</span>}
-          {personalDetails?.phone && personalDetails?.email && <span> | </span>}
-          {personalDetails?.phone && <span>{personalDetails.phone}</span>}
-          {personalDetails?.location && (personalDetails?.email || personalDetails?.phone) && <span> | </span>}
-          {personalDetails?.location && <span>{personalDetails.location}</span>}
-        </div>
-        <div style={{ fontSize: '14px', color: '#2563eb', marginTop: '8px' }}>
-          {personalDetails?.linkedin && (
-            <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none', marginRight: '15px' }}>
-              LinkedIn
-            </a>
-          )}
-          {personalDetails?.github && (
-            <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none', marginRight: '15px' }}>
-              GitHub
-            </a>
-          )}
-          {personalDetails?.portfolio && (
-            <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none' }}>
-              Portfolio
-            </a>
-          )}
-        </div>
+        {(personalDetails?.linkedin || personalDetails?.github || personalDetails?.portfolio) && (
+          <div style={{ fontSize: "10px", marginTop: "3px", display: "flex", justifyContent: "center", gap: "15px" }}>
+            {personalDetails?.linkedin && <span>LinkedIn: {personalDetails.linkedin}</span>}
+            {personalDetails?.github && <span>GitHub: {personalDetails.github}</span>}
+            {personalDetails?.portfolio && <span>Portfolio: {personalDetails.portfolio}</span>}
+          </div>
+        )}
       </div>
 
+      {/* Profile Summary */}
+      {profileSummary?.summary && (
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            PROFESSIONAL SUMMARY
+          </h2>
+          <p style={{ margin: "0", textAlign: "justify", fontSize: "10px" }}>
+            {profileSummary.summary}
+          </p>
+        </div>
+      )}
+
       {/* Education */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>EDUCATION</h2>
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          EDUCATION
+        </h2>
         {education && education.length > 0 ? (
           education.map((edu, index) => (
-            <div key={edu.id || index} style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{edu.collegeName}</div>
-                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>
-                    {edu.degreeName} {edu.cgpa && `• CGPA: ${edu.cgpa}`}
+                  <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                    {edu.collegeName || "College Name"}
+                  </div>
+                  <div style={{ fontSize: "10px", fontStyle: "italic" }}>
+                    {edu.degreeName || "Degree Name"} {edu.cgpa && `• CGPA - ${edu.cgpa}`}
                   </div>
                   {edu.description && (
-                    <div style={{ fontSize: '9px', marginTop: '2px', color: '#666' }}>
+                    <div style={{ fontSize: "9px", marginTop: "2px" }}>
                       {edu.description}
                     </div>
                   )}
                 </div>
-                <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                  <div>{edu.startDate} - {edu.endDate || "Present"}</div>
+                <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                  <div style={{ fontWeight: "bold" }}>
+                    {edu.startDate || "MM YYYY"} - {edu.endDate || "MM YYYY"}
+                  </div>
                   {(edu.city || edu.country) && (
-                    <div style={{ fontStyle: 'italic' }}>
+                    <div style={{ fontStyle: "italic" }}>
                       {edu.city}{edu.city && edu.country && ', '}{edu.country}
                     </div>
                   )}
@@ -123,120 +127,143 @@ export default function A4Template({ data }: A4TemplateProps) {
             </div>
           ))
         ) : (
-          <div style={{ marginBottom: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ marginBottom: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>College Name</div>
-                <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Degree Name • CGPA: xx</div>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>College Name</div>
+                <div style={{ fontSize: "10px", fontStyle: "italic" }}>Degree Name • CGPA - xx</div>
               </div>
-              <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                <div>MM YYYY - MM YYYY</div>
-                <div style={{ fontStyle: 'italic' }}>city, country</div>
+              <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                <div style={{ fontWeight: "bold" }}>MM YYYY - MM YYYY</div>
+                <div style={{ fontStyle: "italic" }}>city, country</div>
               </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Profile Summary */}
-      {profileSummary?.summary && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>PROFESSIONAL SUMMARY</h2>
-          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
-            {profileSummary.summary}
-          </div>
-        </div>
-      )}
-
-      {/* Technical Skills */}
-      {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>TECHNICAL SKILLS</h2>
-          <div style={{ fontSize: '10px' }}>
-            {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <strong>Programming Languages:</strong> {technicalSkills.languages.join(', ')}
+      {/* Coursework/Skills */}
+      {((courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0) || 
+        (technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0))) && (
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            COURSEWORK / SKILLS
+          </h2>
+          
+          {/* Coursework */}
+          {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 && (
+            <div style={{ marginBottom: "8px" }}>
+              <div style={{ fontSize: "10px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                {courseworkSkills.selectedCourses.map((course, index) => (
+                  <div key={index}>• {course}</div>
+                ))}
               </div>
-            )}
-            {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <strong>Technologies & Frameworks:</strong> {technicalSkills.technologiesFrameworks.join(', ')}
-              </div>
-            )}
-            {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <strong>Developer Tools:</strong> {technicalSkills.developerTools.join(', ')}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Coursework */}
-      {(coursework && coursework.length > 0) || (courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0) && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>RELEVANT COURSEWORK</h2>
-          <div style={{ fontSize: '10px' }}>
-            {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 
-              ? courseworkSkills.selectedCourses.join(' • ')
-              : coursework && coursework.join(' • ')
-            }
-          </div>
+            </div>
+          )}
+          
+          {/* Technical Skills */}
+          {technicalSkills && (
+            <div style={{ fontSize: "10px" }}>
+              {technicalSkills.languages && technicalSkills.languages.length > 0 && (
+                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                  {technicalSkills.languages.map((lang, index) => (
+                    <div key={index}>• {lang}</div>
+                  ))}
+                </div>
+              )}
+              {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
+                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                  {technicalSkills.technologiesFrameworks.map((tech, index) => (
+                    <div key={index}>• {tech}</div>
+                  ))}
+                </div>
+              )}
+              {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
+                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
+                  {technicalSkills.developerTools.map((tool, index) => (
+                    <div key={index}>• {tool}</div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
       {/* Projects */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>PROJECTS</h2>
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          PROJECTS
+        </h2>
         {projects && projects.length > 0 ? (
           projects.map((project, index) => (
-            <div key={project.id || index} style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px', flex: 1 }}>
-                  {project.projectName} 
-                  {project.downloadLink && (
-                    <a href={project.downloadLink} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
-                  )}
-                  {project.technologyStack && ` | ${project.technologyStack}`}
+            <div key={index} style={{ marginBottom: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px", flex: 1 }}>
+                  Project Name {project.downloadLink && "🔗"} | {project.technologyStack || "Technology Stack Used"}
                 </div>
-                <div style={{ fontSize: '10px', minWidth: '80px', textAlign: 'right' }}>
-                  {project.startDate && project.endDate ? `${project.startDate} - ${project.endDate}` : project.startDate || 'MM YYYY'}
+                <div style={{ fontSize: "10px", minWidth: "80px", textAlign: "right" }}>
+                  {project.startDate || "MM YYYY"}
                 </div>
               </div>
-              <div style={{ fontSize: '10px', marginBottom: '4px' }}>
-                • {project.description}
+              <div style={{ fontSize: "10px" }}>
+                • {project.description || "About project highlight key points."}
               </div>
-              {project.keyPoints && project.keyPoints.length > 0 && (
-                <div style={{ fontSize: '10px' }}>
-                  {project.keyPoints.map((point, pointIndex) => (
-                    <div key={pointIndex} style={{ marginBottom: '1px' }}>• {point}</div>
-                  ))}
+              {project.downloadLink && (
+                <div style={{ fontSize: "9px", color: "#0066cc", marginTop: "2px" }}>
+                  Link: {project.downloadLink}
                 </div>
               )}
             </div>
           ))
         ) : (
           <>
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
-                  Project Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a> | Technology Stack Used
+            <div style={{ marginBottom: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                  Project Name 🔗 | Technology Stack Used
                 </div>
-                <div style={{ fontSize: '10px' }}>MM YYYY</div>
+                <div style={{ fontSize: "10px" }}>MM YYYY</div>
               </div>
-              <div style={{ fontSize: '10px' }}>
+              <div style={{ fontSize: "10px" }}>
                 • About project highlight key points.
               </div>
             </div>
-            <div style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
-                  Project Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a> | Technology Stack Used
+            <div style={{ marginBottom: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                  Project Name 🔗 | Technology Stack Used
                 </div>
-                <div style={{ fontSize: '10px' }}>MM YYYY</div>
+                <div style={{ fontSize: "10px" }}>MM YYYY</div>
               </div>
-              <div style={{ fontSize: '10px' }}>
+              <div style={{ fontSize: "10px" }}>
                 • About project highlight key points.
+              </div>
+            </div>
+            <div style={{ marginBottom: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                  Project Name 🔗 | Technology Stack Used
+                </div>
+                <div style={{ fontSize: "10px" }}>MM YYYY</div>
+              </div>
+              <div style={{ fontSize: "10px" }}>
+                • About project highlight key points.
+                <br />• Download
               </div>
             </div>
           </>
@@ -244,25 +271,38 @@ export default function A4Template({ data }: A4TemplateProps) {
       </div>
 
       {/* Internship */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>INTERNSHIP</h2>
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          INTERNSHIP
+        </h2>
         {internships && internships.length > 0 ? (
           internships.map((internship, index) => (
-            <div key={internship.id || index} style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div key={index} style={{ marginBottom: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
-                    {internship.companyName} 
+                  <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                    {internship.companyName} {internship.downloadLink && "🔗"}
                   </div>
-                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.roleName}</div>
-                  <div style={{ fontSize: '10px', marginTop: '2px' }}>
-                    • {internship.description || 'About the role and responsibilities carried out.'}
+                  <div style={{ fontStyle: "italic", fontSize: "10px" }}>
+                    {internship.roleName}
+                  </div>
+                  <div style={{ fontSize: "10px", marginTop: "2px" }}>
+                    • {internship.description || "About the role and responsibilities carried out."}
                   </div>
                 </div>
-                <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                  <div>{internship.startDate} - {internship.endDate || "Present"}</div>
+                <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                  <div style={{ fontWeight: "bold" }}>
+                    {internship.startDate || "MM YYYY"} - {internship.endDate || "MM YYYY"}
+                  </div>
                   {(internship.city || internship.country) && (
-                    <div style={{ fontStyle: 'italic' }}>
+                    <div style={{ fontStyle: "italic" }}>
                       {internship.city}{internship.city && internship.country && ', '}{internship.country}
                     </div>
                   )}
@@ -271,44 +311,89 @@ export default function A4Template({ data }: A4TemplateProps) {
             </div>
           ))
         ) : (
-          <div style={{ marginBottom: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div style={{ marginBottom: "12px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Company Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a></div>
-                <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Role Name</div>
-                <div style={{ fontSize: '10px', marginTop: '2px' }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Company Name 🔗</div>
+                <div style={{ fontStyle: "italic", fontSize: "10px" }}>Role Name</div>
+                <div style={{ fontSize: "10px", marginTop: "2px" }}>
                   • About the role and responsibilities carried out.
                 </div>
               </div>
-              <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                <div>MM YYYY - MM YYYY</div>
-                <div style={{ fontStyle: 'italic' }}>city, country</div>
+              <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                <div style={{ fontWeight: "bold" }}>MM YYYY - MM YYYY</div>
+                <div style={{ fontStyle: "italic" }}>city, country</div>
               </div>
             </div>
           </div>
         )}
       </div>
 
-
+      {/* Technical Skills */}
+      {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) && (
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            TECHNICAL SKILLS
+          </h2>
+          <div style={{ fontSize: "10px" }}>
+            {technicalSkills.languages && technicalSkills.languages.length > 0 && (
+              <div style={{ marginBottom: "3px" }}>
+                <strong>Languages:</strong> {technicalSkills.languages.join(", ")}
+              </div>
+            )}
+            {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
+              <div style={{ marginBottom: "3px" }}>
+                <strong>Technologies:</strong> {technicalSkills.technologiesFrameworks.join(", ")}
+              </div>
+            )}
+            {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
+              <div style={{ marginBottom: "3px" }}>
+                <strong>Tools:</strong> {technicalSkills.developerTools.join(", ")}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Extracurricular */}
       {extracurricular && extracurricular.length > 0 && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>EXTRACURRICULAR</h2>
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            EXTRACURRICULAR
+          </h2>
           {extracurricular.map((activity, index) => (
-            <div key={activity.id || index} style={{ marginBottom: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{activity.organizationName}</div>
-                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{activity.roleName}</div>
-                  {activity.description && (
-                    <div style={{ fontSize: '10px', marginTop: '2px' }}>
-                      • {activity.description}
-                    </div>
-                  )}
+                  <div style={{ fontWeight: "bold", fontSize: "11px" }}>
+                    {activity.organizationName} 🔗
+                  </div>
+                  <div style={{ fontStyle: "italic", fontSize: "10px" }}>
+                    {activity.roleName}
+                  </div>
+                  <div style={{ fontSize: "10px", marginTop: "2px" }}>
+                    • {activity.description || "About the role and responsibilities carried out."}
+                  </div>
                 </div>
-                <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                  <div>{activity.startDate} - {activity.endDate || "Present"}</div>
+                <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                  <div style={{ fontWeight: "bold" }}>
+                    {activity.startDate || "MM YYYY"} - {activity.endDate || "MM YYYY"}
+                  </div>
+                  <div style={{ fontStyle: "italic" }}>Location</div>
                 </div>
               </div>
             </div>
@@ -316,13 +401,70 @@ export default function A4Template({ data }: A4TemplateProps) {
         </div>
       )}
 
+      {/* Certifications */}
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          CERTIFICATIONS
+        </h2>
+        {certifications && certifications.length > 0 ? (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(2, 1fr)", 
+            gap: "8px 20px", 
+            fontSize: "10px" 
+          }}>
+            {certifications.map((cert, index) => (
+              <div key={index}>
+                • {cert.name} - {cert.issuer}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(2, 1fr)", 
+            gap: "8px 20px", 
+            fontSize: "10px" 
+          }}>
+            <div>• ReactJS & Redux - Udemy</div>
+            <div>• Java</div>
+            <div>• Python for Data Science - XYZ</div>
+            <div>• SQL</div>
+            <div>• 5 Stars in C++ & SQL 🔗</div>
+            <div>• MongoDB Basics</div>
+            <div></div>
+            <div>• Command Line in Linux - Coursera</div>
+            <div></div>
+            <div>• Microsoft AI Classroom - Microsoft</div>
+            <div></div>
+            <div>• NodeJS with Express & MongoDB - Udemy</div>
+          </div>
+        )}
+      </div>
+
       {/* Languages */}
       {languages && languages.length > 0 && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>LANGUAGES</h2>
-          <div style={{ fontSize: '10px' }}>
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            LANGUAGES
+          </h2>
+          <div style={{ fontSize: "10px" }}>
             {languages.map((lang, index) => (
-              <div key={index} style={{ marginBottom: '4px' }}>
+              <div key={index} style={{ marginBottom: "2px" }}>
                 <strong>{lang.language}:</strong> {lang.proficiency}
               </div>
             ))}
@@ -330,49 +472,48 @@ export default function A4Template({ data }: A4TemplateProps) {
         </div>
       )}
 
-      {/* Hobbies & Interests */}
+      {/* Hobbies */}
       {hobbies?.hobbies && hobbies.hobbies.length > 0 && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>INTERESTS & HOBBIES</h2>
-          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
-            {hobbies.hobbies.join(' • ')}
+        <div style={{ marginBottom: "18px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
+          }}>
+            INTERESTS & HOBBIES
+          </h2>
+          <div style={{ fontSize: "10px" }}>
+            {hobbies.hobbies.join(", ")}
           </div>
         </div>
       )}
 
       {/* References */}
       {references && references.length > 0 && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>REFERENCES</h2>
-          {references.map((ref, index) => (
-            <div key={index} style={{ marginBottom: '8px' }}>
-              <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{ref.name}</div>
-              <div style={{ fontSize: '10px' }}>{ref.title} at {ref.company}</div>
-              <div style={{ fontSize: '10px' }}>{ref.email} | {ref.phone}</div>
-              <div style={{ fontSize: '9px', color: '#666' }}>Relationship: {ref.relationship}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Certifications */}
-      {certifications && certifications.length > 0 && (
-        <div style={printStyles.sectionContainer}>
-          <h2 style={printStyles.sectionHeader}>CERTIFICATIONS</h2>
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(2, 1fr)', 
-            gap: '4px 16px', 
-            fontSize: '10px' 
+        <div style={{ marginBottom: "10px" }}>
+          <h2 style={{ 
+            fontSize: "12px", 
+            fontWeight: "bold", 
+            marginBottom: "8px",
+            textTransform: "uppercase",
+            borderBottom: "1px solid #000",
+            paddingBottom: "2px"
           }}>
-            {certifications.map((cert, index) => (
-              <div key={cert.id || index} style={{ marginBottom: '4px' }}>
-                <div style={{ fontWeight: 'bold' }}>• {cert.name}</div>
-                <div style={{ fontSize: '9px', color: '#666', marginLeft: '8px' }}>
-                  {cert.issuer} - {cert.date}
-                  {cert.url && (
-                    <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', marginLeft: '4px' }}>🔗</a>
-                  )}
+            REFERENCES
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "15px" }}>
+            {references.map((ref, index) => (
+              <div key={index} style={{ fontSize: "10px" }}>
+                <div style={{ fontWeight: "bold" }}>{ref.name}</div>
+                <div>{ref.title}</div>
+                <div>{ref.company}</div>
+                <div>{ref.email}</div>
+                <div>{ref.phone}</div>
+                <div style={{ fontSize: "9px", color: "#666" }}>
+                  Relationship: {ref.relationship}
                 </div>
               </div>
             ))}
