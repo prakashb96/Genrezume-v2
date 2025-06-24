@@ -1,0 +1,126 @@
+# Genrezume - Professional Resume Builder
+
+## Overview
+
+Genrezume is a modern web application that allows users to create professional resumes with multiple templates and real-time preview functionality. The application combines a React-based frontend with Express.js backend, Firebase authentication, and PostgreSQL database for persistent storage.
+
+## System Architecture
+
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Routing**: Wouter for client-side routing
+- **Styling**: Tailwind CSS with shadcn/ui component library
+- **State Management**: React Context for authentication and resume data
+- **Form Handling**: React Hook Form with Zod validation
+- **PDF Generation**: html2canvas + jsPDF for resume export
+
+### Backend Architecture
+- **Framework**: Express.js with TypeScript
+- **Runtime**: Node.js 20
+- **Build Tool**: Vite for frontend bundling, esbuild for backend compilation
+- **Development**: Hot reload with Vite middleware integration
+
+### Authentication
+- **Primary**: Firebase Authentication
+- **Methods**: Email/password and Google OAuth
+- **Session Management**: Firebase Auth state persistence
+- **Guest Mode**: Local storage fallback for unauthenticated users
+
+### Data Layer
+- **Database**: PostgreSQL 16 (configured but not yet implemented)
+- **ORM**: Drizzle ORM with Zod schema validation
+- **Migration**: Drizzle Kit for database migrations
+- **Current Storage**: In-memory storage with local storage persistence
+
+## Key Components
+
+### Core Features
+1. **Multi-step Resume Builder**: 8-step form process covering all resume sections
+2. **Live Preview**: Real-time resume preview with zoom controls
+3. **Template System**: Multiple professional resume templates
+4. **PDF Export**: High-quality PDF generation with optimized text rendering
+5. **Responsive Design**: Mobile-first responsive layout
+
+### Form Sections
+- Personal Details
+- Education
+- Coursework/Skills
+- Projects
+- Internships
+- Technical Skills
+- Extracurricular Activities
+- Certifications
+
+### Template System
+- Modern Professional
+- Classic Traditional
+- Creative
+- Minimal
+- Professional
+
+## Data Flow
+
+### Authentication Flow
+1. User registers/logs in via Firebase Auth
+2. Authentication state managed by AuthContext
+3. Protected routes redirect unauthenticated users
+4. Guest mode allows local-only resume building
+
+### Resume Building Flow
+1. User navigates through multi-step form
+2. Form data validated with Zod schemas
+3. Real-time updates reflected in preview
+4. Data persisted to local storage (authenticated) or browser storage (guest)
+5. PDF export generates from preview DOM element
+
+### Data Persistence
+- **Authenticated Users**: Firebase Auth + planned PostgreSQL storage
+- **Guest Users**: Local storage only
+- **Session Management**: Firebase Auth state persistence
+
+## External Dependencies
+
+### Core Dependencies
+- **Firebase**: Authentication and planned data storage
+- **@neondatabase/serverless**: PostgreSQL connection (configured)
+- **Drizzle ORM**: Database operations and schema management
+- **Tailwind CSS**: Utility-first styling framework
+- **shadcn/ui**: Pre-built component library
+
+### Development Tools
+- **Vite**: Build tool and development server
+- **TypeScript**: Type safety across frontend and backend
+- **ESBuild**: Backend compilation for production
+- **Replit**: Development environment and deployment platform
+
+## Deployment Strategy
+
+### Development Environment
+- **Platform**: Replit with Node.js 20 runtime
+- **Database**: PostgreSQL 16 module
+- **Port Configuration**: Backend on 5000, proxied to port 80
+
+### Build Process
+1. **Frontend**: Vite builds React app to `dist/public`
+2. **Backend**: ESBuild compiles TypeScript server to `dist/index.js`
+3. **Assets**: Static files served from build output
+
+### Production Deployment
+- **Target**: Autoscale deployment on Replit
+- **Build Command**: `npm run build`
+- **Start Command**: `npm run start`
+- **Environment**: Production Node.js with compiled assets
+
+### Database Setup
+- **Current**: In-memory storage with local persistence
+- **Planned**: PostgreSQL with Drizzle ORM migrations
+- **Schema**: User accounts, resume data with JSON fields
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## Changelog
+
+Changelog:
+- June 24, 2025. Initial setup
