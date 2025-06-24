@@ -91,8 +91,19 @@ export default function Profile() {
 
   const downloadResume = async (resume: Resume) => {
     try {
-      // Parse the resume data
-      const resumeData = JSON.parse(resume.data);
+      // Parse the resume data - handle both string and object cases
+      let resumeData;
+      try {
+        if (typeof resume.data === 'string') {
+          resumeData = JSON.parse(resume.data);
+        } else {
+          resumeData = resume.data;
+        }
+      } catch (parseError) {
+        console.error('Error parsing resume data:', parseError);
+        console.log('Raw resume data:', resume.data);
+        throw new Error('Invalid resume data format. Please try saving your resume again.');
+      }
       console.log('Resume data for download:', resumeData);
 
       // Create a temporary invisible iframe to render the resume
@@ -197,7 +208,17 @@ export default function Profile() {
   };
 
   const generateResumeHTML = (resume: Resume) => {
-    const data = JSON.parse(resume.data);
+    let data;
+    try {
+      if (typeof resume.data === 'string') {
+        data = JSON.parse(resume.data);
+      } else {
+        data = resume.data;
+      }
+    } catch (parseError) {
+      console.error('Error parsing resume data in generateResumeHTML:', parseError);
+      data = {};
+    }
     const personalDetails = data.personalDetails || {};
     
     return `

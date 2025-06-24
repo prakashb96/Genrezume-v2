@@ -43,6 +43,8 @@ export const resumes = pgTable("resumes", {
   template: text("template").notNull().default("modern"),
   data: jsonb("data").notNull(),
   isPublic: boolean("is_public").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Resume data structure
