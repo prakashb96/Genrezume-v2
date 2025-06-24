@@ -57,23 +57,17 @@ export default function A4Template({ data }: A4TemplateProps) {
           {personalDetails?.location && <span>📍 {personalDetails.location}</span>}
         </div>
         <div style={{ fontSize: "10px", marginTop: "3px", display: "flex", justifyContent: "center", gap: "15px" }}>
-          <span>
-            <a href="https://www.linkedin.com/in/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-              LinkedIn
-            </a>: www.linkedin.com/in/prakashb96
-          </span>
+          <a href="https://www.linkedin.com/in/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
           
-          <span>
-            <a href="https://github.com/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>: github.com/prakashb96
-          </span>
+          <a href="https://github.com/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
           
-          <span>
-            <a href="https://prakashb96.dev" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-              Portfolio
-            </a>: prakashb96.dev
-          </span>
+          <a href="https://prakashb96.dev" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+            Portfolio
+          </a>
         </div>
       </div>
 
