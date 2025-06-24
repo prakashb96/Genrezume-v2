@@ -42,6 +42,53 @@
   --warning: hsl(43, 96%, 56%);
 }
 
+/* A4 Print Styles */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  .resume-template {
+    width: 210mm !important;
+    min-height: 297mm !important;
+    margin: 0 !important;
+    padding: 15mm !important;
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+  
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Hide everything except resume template during print */
+  body * {
+    visibility: hidden;
+  }
+  
+  .resume-template, .resume-template * {
+    visibility: visible;
+  }
+  
+  .resume-template {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
 .dark {
   --background: hsl(222, 84%, 4.9%);
   --foreground: hsl(210, 40%, 98%);
