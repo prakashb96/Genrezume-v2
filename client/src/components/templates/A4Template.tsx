@@ -59,27 +59,21 @@ export default function A4Template({ data }: A4TemplateProps) {
         {(personalDetails?.linkedin || personalDetails?.github || personalDetails?.portfolio) && (
           <div style={{ fontSize: "10px", marginTop: "3px", display: "flex", justifyContent: "center", gap: "15px" }}>
             {personalDetails?.linkedin && (
-              <span>
-                <a href={personalDetails.linkedin} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                  LinkedIn
-                </a>: {personalDetails.linkedin.replace('https://', '').replace('http://', '')}
-              </span>
+              <a href={personalDetails.linkedin} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+                LinkedIn
+              </a>
             )}
             
             {personalDetails?.github && (
-              <span>
-                <a href={personalDetails.github} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                  GitHub
-                </a>: {personalDetails.github.replace('https://', '').replace('http://', '')}
-              </span>
+              <a href={personalDetails.github} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+                GitHub
+              </a>
             )}
             
             {personalDetails?.portfolio && (
-              <span>
-                <a href={personalDetails.portfolio} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                  Portfolio
-                </a>: {personalDetails.portfolio.replace('https://', '').replace('http://', '')}
-              </span>
+              <a href={personalDetails.portfolio} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+                Portfolio
+              </a>
             )}
           </div>
         )}
@@ -236,13 +230,7 @@ export default function A4Template({ data }: A4TemplateProps) {
               <div style={{ fontSize: "10px" }}>
                 • {project.description || "About project highlight key points."}
               </div>
-              {project.downloadLink && (
-                <div style={{ fontSize: "9px", marginTop: "2px" }}>
-                  Link: <a href={project.downloadLink} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                    {project.downloadLink}
-                  </a>
-                </div>
-              )}
+
             </div>
           ))
         ) : (
