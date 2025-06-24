@@ -44,13 +44,13 @@ export default function ProjectsForm() {
   const addProject = () => {
     append({
       id: nanoid(),
-      name: "",
+      projectName: "",
+      technologyStack: "",
       description: "",
-      technologies: [],
       startDate: "",
       endDate: "",
-      url: "",
-      github: "",
+      downloadLink: "",
+      keyPoints: [],
     });
   };
 
@@ -100,7 +100,7 @@ export default function ProjectsForm() {
               <CardContent className="space-y-4">
                 <FormField
                   control={form.control}
-                  name={`projects.${index}.name`}
+                  name={`projects.${index}.projectName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Project Name <span className="text-red-500">*</span></FormLabel>
@@ -226,10 +226,10 @@ export default function ProjectsForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
-                    name={`projects.${index}.url`}
+                    name={`projects.${index}.downloadLink`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Live Demo URL</FormLabel>
+                        <FormLabel>Download Link</FormLabel>
                         <FormControl>
                           <Input 
                             type="url" 
@@ -244,14 +244,13 @@ export default function ProjectsForm() {
 
                   <FormField
                     control={form.control}
-                    name={`projects.${index}.github`}
+                    name={`projects.${index}.technologyStack`}
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>GitHub Repository</FormLabel>
+                        <FormLabel>Technology Stack</FormLabel>
                         <FormControl>
                           <Input 
-                            type="url" 
-                            placeholder="https://github.com/username/project" 
+                            placeholder="React, Node.js, MongoDB" 
                             {...field} 
                           />
                         </FormControl>
@@ -265,10 +264,21 @@ export default function ProjectsForm() {
           ))}
 
           {fields.length > 0 && (
-            <Button type="button" onClick={addProject} variant="outline" className="w-full">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Another Project
-            </Button>
+            <div className="space-y-4">
+              <Button type="button" onClick={addProject} variant="outline" className="w-full">
+                <Plus className="w-4 h-4 mr-2" />
+                Add Another Project
+              </Button>
+              <Button 
+                type="button" 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={() => {
+                  console.log("Projects data saved:", watchedValues.projects);
+                }}
+              >
+                Save Projects Details
+              </Button>
+            </div>
           )}
 
           <div className="bg-green-50 p-4 rounded-lg border border-green-200">

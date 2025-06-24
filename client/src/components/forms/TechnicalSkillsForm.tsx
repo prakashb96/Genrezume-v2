@@ -7,13 +7,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
 
 const technicalSkillsFormSchema = z.object({
-  programmingLanguages: z.array(z.string()).default([]),
-  frameworks: z.array(z.string()).default([]),
-  tools: z.array(z.string()).default([]),
-  databases: z.array(z.string()).default([]),
-  platforms: z.array(z.string()).default([])
+  languages: z.array(z.string()).default([]),
+  developerTools: z.array(z.string()).default([]),
+  technologiesFrameworks: z.array(z.string()).default([])
 });
 
 type TechnicalSkillsFormData = z.infer<typeof technicalSkillsFormSchema>;
@@ -24,11 +23,9 @@ export default function TechnicalSkillsForm() {
   const form = useForm<TechnicalSkillsFormData>({
     resolver: zodResolver(technicalSkillsFormSchema),
     defaultValues: {
-      programmingLanguages: [""],
-      frameworks: [""],
-      tools: [""],
-      databases: [""],
-      platforms: [""]
+      languages: state.resumeData.technicalSkills?.languages || [""],
+      developerTools: state.resumeData.technicalSkills?.developerTools || [""],
+      technologiesFrameworks: state.resumeData.technicalSkills?.technologiesFrameworks || [""]
     },
   });
 
@@ -45,12 +42,20 @@ export default function TechnicalSkillsForm() {
     form.setValue(fieldName, updated);
   };
 
-  const onSubmit = (data: TechnicalSkillsFormData) => {
-    // Filter out empty strings and map to schema structure
+  useEffect(() => {
     const cleanedData = {
-      languages: data.programmingLanguages.filter(item => item.trim() !== ""),
-      technologiesFrameworks: [...data.frameworks.filter(item => item.trim() !== ""), ...data.databases.filter(item => item.trim() !== ""), ...data.platforms.filter(item => item.trim() !== "")],
-      developerTools: data.tools.filter(item => item.trim() !== "")
+      languages: watchedFields.languages?.filter(item => item.trim() !== '') || [],
+      developerTools: watchedFields.developerTools?.filter(item => item.trim() !== '') || [],
+      technologiesFrameworks: watchedFields.technologiesFrameworks?.filter(item => item.trim() !== '') || []
+    };
+    updateData("technicalSkills", cleanedData);
+  }, [watchedFields, updateData]);
+
+  const onSubmit = (data: TechnicalSkillsFormData) => {
+    const cleanedData = {
+      languages: data.languages?.filter(item => item.trim() !== "") || [],
+      developerTools: data.developerTools?.filter(item => item.trim() !== "") || [],
+      technologiesFrameworks: data.technologiesFrameworks?.filter(item => item.trim() !== "") || []
     };
     updateData("technicalSkills", cleanedData);
   };
@@ -107,13 +112,15 @@ export default function TechnicalSkillsForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {renderSkillSection("Programming Languages", "programmingLanguages", "Python, Java, JavaScript...")}
-        {renderSkillSection("Frameworks", "frameworks", "React, Node.js, Django...")}
-        {renderSkillSection("Tools", "tools", "Git, Docker, VS Code...")}
-        {renderSkillSection("Databases", "databases", "MySQL, MongoDB, PostgreSQL...")}
-        {renderSkillSection("Platforms", "platforms", "AWS, Linux, Windows...")}
+        {renderSkillSection("Languages", "languages", "Python, Java, C, C++, JavaScript...")}
+        {renderSkillSection("Developer Tools", "developerTools", "VS Code, Android Studio, DataGrip...")}
+        {renderSkillSection("Technologies/Frameworks", "technologiesFrameworks", "Linux, GitHub, ReactJS, Redux, NextJS...")}
 
-        <Button type="submit" className="w-full">
+        <Button 
+          type="button" 
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => onSubmit(watchedFields)}
+        >
           Save Technical Skills
         </Button>
       </form>

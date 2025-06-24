@@ -42,13 +42,13 @@ export default function EducationForm() {
   const addEducation = () => {
     append({
       id: nanoid(),
-      institution: "",
-      degree: "",
-      field: "",
+      collegeName: "",
+      degreeName: "",
+      cgpa: "",
       startDate: "",
       endDate: "",
-      gpa: "",
-      description: "",
+      city: "",
+      country: "",
     });
   };
 
@@ -83,12 +83,12 @@ export default function EducationForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name={`education.${index}.institution`}
+                  name={`education.${index}.collegeName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Institution <span className="text-red-500">*</span></FormLabel>
                       <FormControl>
-                        <Input placeholder="University of California, Berkeley" {...field} />
+                        <Input placeholder="KIT-KALAIGNARKARUNANIDHI INST" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -97,12 +97,12 @@ export default function EducationForm() {
 
                 <FormField
                   control={form.control}
-                  name={`education.${index}.degree`}
+                  name={`education.${index}.degreeName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Degree <span className="text-red-500">*</span></FormLabel>
                       <FormControl>
-                        <Input placeholder="Bachelor of Science" {...field} />
+                        <Input placeholder="BTECH" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -112,19 +112,19 @@ export default function EducationForm() {
 
               <FormField
                 control={form.control}
-                name={`education.${index}.field`}
+                name={`education.${index}.cgpa`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Field of Study</FormLabel>
+                    <FormLabel>CGPA (Optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="Computer Science" {...field} />
+                      <Input placeholder="7.45" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name={`education.${index}.startDate`}
@@ -132,7 +132,7 @@ export default function EducationForm() {
                     <FormItem>
                       <FormLabel>Start Date <span className="text-red-500">*</span></FormLabel>
                       <FormControl>
-                        <Input placeholder="2020" {...field} />
+                        <Input placeholder="2023 july" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -146,7 +146,23 @@ export default function EducationForm() {
                     <FormItem>
                       <FormLabel>End Date</FormLabel>
                       <FormControl>
-                        <Input placeholder="2024" {...field} />
+                        <Input placeholder="2025 sep" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name={`education.${index}.city`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>City (Optional)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Chennai" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -155,12 +171,12 @@ export default function EducationForm() {
 
                 <FormField
                   control={form.control}
-                  name={`education.${index}.gpa`}
+                  name={`education.${index}.country`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>GPA (Optional)</FormLabel>
+                      <FormLabel>Country (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="3.8" {...field} />
+                        <Input placeholder="India" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -189,10 +205,22 @@ export default function EducationForm() {
         ))}
 
         {fields.length > 0 && (
-          <Button type="button" onClick={addEducation} variant="outline" className="w-full">
-            <Plus className="w-4 h-4 mr-2" />
-            Add Another Education
-          </Button>
+          <div className="space-y-4">
+            <Button type="button" onClick={addEducation} variant="outline" className="w-full">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Another Education
+            </Button>
+            <Button 
+              type="button" 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={() => {
+                // Data is automatically saved via useEffect
+                console.log("Education data saved:", watchedValues.education);
+              }}
+            >
+              Save Education Details
+            </Button>
+          </div>
         )}
       </form>
     </Form>

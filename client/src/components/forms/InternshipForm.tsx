@@ -9,17 +9,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
 import { generateId } from "@/lib/utils";
+import { useEffect } from "react";
 
 const internshipFormSchema = z.object({
   internships: z.array(z.object({
     id: z.string(),
     companyName: z.string().min(1, "Company name is required"),
-    role: z.string().min(1, "Role is required"),
-    location: z.string().optional(),
+    roleName: z.string().min(1, "Role is required"),
+    city: z.string().optional(),
+    country: z.string().optional(),
     startDate: z.string().min(1, "Start date is required"),
     endDate: z.string().optional(),
-    description: z.string().min(1, "Description is required"),
-    keyPoints: z.array(z.string()).default([])
+    description: z.string().min(1, "Description is required")
   }))
 });
 
@@ -31,22 +32,27 @@ export default function InternshipForm() {
   const form = useForm<InternshipFormData>({
     resolver: zodResolver(internshipFormSchema),
     defaultValues: {
-      internships: []
+      internships: state.resumeData.internships || []
     },
   });
 
   const internships = form.watch("internships");
 
+  // Auto-save when data changes
+  useEffect(() => {
+    updateData("internships", internships);
+  }, [internships, updateData]);
+
   const addInternship = () => {
     const newInternship = {
       id: generateId(),
       companyName: "",
-      role: "",
-      location: "",
+      roleName: "",
+      city: "",
+      country: "",
       startDate: "",
       endDate: "",
-      description: "",
-      keyPoints: [""]
+      description: ""
     };
     form.setValue("internships", [...internships, newInternship]);
   };
@@ -109,7 +115,7 @@ export default function InternshipForm() {
 
                 <FormField
                   control={form.control}
-                  name={`internships.${index}.role`}
+                  name={`internships.${index}.roleName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Role</FormLabel>
@@ -123,12 +129,26 @@ export default function InternshipForm() {
 
                 <FormField
                   control={form.control}
-                  name={`internships.${index}.location`}
+                  name={`internships.${index}.city`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Location</FormLabel>
+                      <FormLabel>City</FormLabel>
                       <FormControl>
-                        <Input placeholder="Seattle, WA" {...field} />
+                        <Input placeholder="Seattle" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name={`internships.${index}.country`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Country</FormLabel>
+                      <FormControl>
+                        <Input placeholder="USA" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -143,7 +163,7 @@ export default function InternshipForm() {
                       <FormItem>
                         <FormLabel>Start Date</FormLabel>
                         <FormControl>
-                          <Input type="month" {...field} />
+                          <Input placeholder="2025-03" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -157,7 +177,7 @@ export default function InternshipForm() {
                       <FormItem>
                         <FormLabel>End Date</FormLabel>
                         <FormControl>
-                          <Input type="month" {...field} />
+                          <Input placeholder="2025-02" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -184,49 +204,7 @@ export default function InternshipForm() {
                 )}
               />
 
-              <div>
-                <FormLabel>Key Points & Achievements</FormLabel>
-                <div className="space-y-2 mt-2">
-                  {internship.keyPoints.map((_, pointIndex) => (
-                    <div key={pointIndex} className="flex gap-2">
-                      <FormField
-                        control={form.control}
-                        name={`internships.${index}.keyPoints.${pointIndex}`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormControl>
-                              <Input 
-                                placeholder="Describe a key achievement or responsibility..."
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {internship.keyPoints.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeKeyPoint(index, pointIndex)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => addKeyPoint(index)}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Key Point
-                  </Button>
-                </div>
-              </div>
+
             </CardContent>
           </Card>
         ))}
@@ -236,7 +214,13 @@ export default function InternshipForm() {
           Add Internship
         </Button>
 
-        <Button type="submit" className="w-full">
+        <Button 
+          type="button" 
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => {
+            console.log("Internship data saved:", internships);
+          }}
+        >
           Save Internship Details
         </Button>
       </form>

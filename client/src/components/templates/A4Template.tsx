@@ -154,7 +154,9 @@ export default function A4Template({ data }: A4TemplateProps) {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '11px', flex: 1 }}>
                   {project.projectName} 
-                  {project.downloadLink && <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}> 🔗</span>}
+                  {project.downloadLink && (
+                    <a href={project.downloadLink} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
+                  )}
                   {project.technologyStack && ` | ${project.technologyStack}`}
                 </div>
                 <div style={{ fontSize: '10px', minWidth: '80px', textAlign: 'right' }}>
@@ -178,7 +180,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
-                  Project Name <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span> | Technology Stack Used
+                  Project Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a> | Technology Stack Used
                 </div>
                 <div style={{ fontSize: '10px' }}>MM YYYY</div>
               </div>
@@ -189,7 +191,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
-                  Project Name <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span> | Technology Stack Used
+                  Project Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a> | Technology Stack Used
                 </div>
                 <div style={{ fontSize: '10px' }}>MM YYYY</div>
               </div>
@@ -209,7 +211,10 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={internship.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{internship.companyName} <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span></div>
+                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
+                    {internship.companyName} 
+                    <a href={internship.companyUrl || "#"} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
+                  </div>
                   <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.roleName}</div>
                   <div style={{ fontSize: '10px', marginTop: '2px' }}>
                     • {internship.description || 'About the role and responsibilities carried out.'}
@@ -230,7 +235,7 @@ export default function A4Template({ data }: A4TemplateProps) {
           <div style={{ marginBottom: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Company Name <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span></div>
+                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Company Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a></div>
                 <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Role Name</div>
                 <div style={{ fontSize: '10px', marginTop: '2px' }}>
                   • About the role and responsibilities carried out.
@@ -312,11 +317,11 @@ export default function A4Template({ data }: A4TemplateProps) {
           <div style={{ marginBottom: '8px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Organization Name <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span></div>
+                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Organization Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a></div>
                 <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Role Name</div>
                 <div style={{ fontSize: '10px', marginTop: '2px' }}>
                   • About the role and responsibilities carried out.
-                  • Participation Certificate <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span>
+                  • Participation Certificate <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</a>
                 </div>
               </div>
               <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
@@ -341,7 +346,9 @@ export default function A4Template({ data }: A4TemplateProps) {
             {certifications.map((cert, index) => (
               <div key={cert.id || index}>
                 • {cert.name}
-                {cert.url && <span style={{ color: 'blue', textDecoration: 'underline' }}> 🔗</span>}
+                {cert.url && (
+                  <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', marginLeft: '4px' }}>🔗</a>
+                )}
               </div>
             ))}
           </div>
@@ -352,13 +359,13 @@ export default function A4Template({ data }: A4TemplateProps) {
             gap: '4px 16px', 
             fontSize: '10px' 
           }}>
-            <div>• Java & DSA - <span style={{ color: 'blue', textDecoration: 'underline' }}>🔗</span></div>
+            <div>• Java & DSA - <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>🔗</a></div>
             <div>• SQL</div>
             <div>• Command Line in Linux - Coursera</div>
             <div>• Python for Data Science - KE</div>
             <div>• MongoDB Basics</div>
             <div>• Microsoft AI Classroom - Microsoft</div>
-            <div>• 5 Stars in C++ & SQL <span style={{ color: 'blue', textDecoration: 'underline' }}>🔗</span></div>
+            <div>• 5 Stars in C++ & SQL <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>🔗</a></div>
             <div></div>
             <div>• Node.js with Express & MongoDB - Udemy</div>
           </div>

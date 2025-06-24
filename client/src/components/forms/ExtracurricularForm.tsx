@@ -9,17 +9,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Plus, Trash2 } from "lucide-react";
 import { generateId } from "@/lib/utils";
+import { useEffect } from "react";
 
 const extracurricularFormSchema = z.object({
-  activities: z.array(z.object({
+  extracurricular: z.array(z.object({
     id: z.string(),
-    activityName: z.string().min(1, "Activity name is required"),
-    role: z.string().min(1, "Role is required"),
-    organization: z.string().optional(),
+    organizationName: z.string().min(1, "Organization name is required"),
+    roleName: z.string().min(1, "Role name is required"),
     startDate: z.string().min(1, "Start date is required"),
     endDate: z.string().optional(),
-    description: z.string().min(1, "Description is required"),
-    achievements: z.array(z.string()).default([])
+    description: z.string().optional()
   }))
 });
 
@@ -31,22 +30,24 @@ export default function ExtracurricularForm() {
   const form = useForm<ExtracurricularFormData>({
     resolver: zodResolver(extracurricularFormSchema),
     defaultValues: {
-      activities: []
+      extracurricular: state.resumeData.extracurricular || []
     },
   });
 
-  const activities = form.watch("activities");
+  const activities = form.watch("extracurricular");
+
+  useEffect(() => {
+    updateData("extracurricular", activities);
+  }, [activities, updateData]);
 
   const addActivity = () => {
     const newActivity = {
       id: generateId(),
-      activityName: "",
-      role: "",
-      organization: "",
+      organizationName: "",
+      roleName: "",
       startDate: "",
       endDate: "",
-      description: "",
-      achievements: [""]
+      description: ""
     };
     form.setValue("activities", [...activities, newActivity]);
   };
@@ -95,7 +96,7 @@ export default function ExtracurricularForm() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name={`activities.${index}.activityName`}
+                  name={`extracurricular.${index}.organizationName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Activity Name</FormLabel>
@@ -109,7 +110,7 @@ export default function ExtracurricularForm() {
 
                 <FormField
                   control={form.control}
-                  name={`activities.${index}.role`}
+                  name={`extracurricular.${index}.roleName`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Role</FormLabel>
@@ -123,12 +124,12 @@ export default function ExtracurricularForm() {
 
                 <FormField
                   control={form.control}
-                  name={`activities.${index}.organization`}
+                  name={`extracurricular.${index}.description`}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Organization (Optional)</FormLabel>
+                      <FormLabel>Description (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="University Name" {...field} />
+                        <Input placeholder="Brief description of activities and responsibilities" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -138,7 +139,7 @@ export default function ExtracurricularForm() {
                 <div className="grid grid-cols-2 gap-2">
                   <FormField
                     control={form.control}
-                    name={`activities.${index}.startDate`}
+                    name={`extracurricular.${index}.startDate`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Start Date</FormLabel>
@@ -152,7 +153,7 @@ export default function ExtracurricularForm() {
 
                   <FormField
                     control={form.control}
-                    name={`activities.${index}.endDate`}
+                    name={`extracurricular.${index}.endDate`}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>End Date</FormLabel>
@@ -236,7 +237,13 @@ export default function ExtracurricularForm() {
           Add Activity
         </Button>
 
-        <Button type="submit" className="w-full">
+        <Button 
+          type="button" 
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+          onClick={() => {
+            console.log("Extracurricular data saved:", activities);
+          }}
+        >
           Save Extracurricular Activities
         </Button>
       </form>
