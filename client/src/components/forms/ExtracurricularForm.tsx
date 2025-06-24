@@ -49,29 +49,17 @@ export default function ExtracurricularForm() {
       endDate: "",
       description: ""
     };
-    form.setValue("activities", [...activities, newActivity]);
+    form.setValue("extracurricular", [...activities, newActivity]);
   };
 
   const removeActivity = (index: number) => {
     const updated = activities.filter((_, i) => i !== index);
-    form.setValue("activities", updated);
+    form.setValue("extracurricular", updated);
     updateData("extracurricular", updated);
   };
 
-  const addAchievement = (activityIndex: number) => {
-    const updated = [...activities];
-    updated[activityIndex].achievements.push("");
-    form.setValue("activities", updated);
-  };
-
-  const removeAchievement = (activityIndex: number, achievementIndex: number) => {
-    const updated = [...activities];
-    updated[activityIndex].achievements = updated[activityIndex].achievements.filter((_, i) => i !== achievementIndex);
-    form.setValue("activities", updated);
-  };
-
   const onSubmit = (data: ExtracurricularFormData) => {
-    updateData("extracurricular", data.activities);
+    updateData("extracurricular", data.extracurricular);
   };
 
   return (
@@ -167,67 +155,7 @@ export default function ExtracurricularForm() {
                 </div>
               </div>
 
-              <FormField
-                control={form.control}
-                name={`activities.${index}.description`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Description</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Brief description of the activity and your involvement..."
-                        className="min-h-[80px]"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
 
-              <div>
-                <FormLabel>Key Achievements</FormLabel>
-                <div className="space-y-2 mt-2">
-                  {activity.achievements.map((_, achievementIndex) => (
-                    <div key={achievementIndex} className="flex gap-2">
-                      <FormField
-                        control={form.control}
-                        name={`activities.${index}.achievements.${achievementIndex}`}
-                        render={({ field }) => (
-                          <FormItem className="flex-1">
-                            <FormControl>
-                              <Input 
-                                placeholder="Describe a key achievement or impact..."
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      {activity.achievements.length > 1 && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          onClick={() => removeAchievement(index, achievementIndex)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => addAchievement(index)}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Achievement
-                  </Button>
-                </div>
-              </div>
             </CardContent>
           </Card>
         ))}
@@ -235,16 +163,6 @@ export default function ExtracurricularForm() {
         <Button type="button" variant="outline" onClick={addActivity} className="w-full">
           <Plus className="h-4 w-4 mr-2" />
           Add Activity
-        </Button>
-
-        <Button 
-          type="button" 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-          onClick={() => {
-            console.log("Extracurricular data saved:", activities);
-          }}
-        >
-          Save Extracurricular Activities
         </Button>
       </form>
     </Form>

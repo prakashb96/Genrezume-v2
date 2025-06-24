@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ResumeProvider } from "@/contexts/ResumeContext";
+import { useState, useEffect } from "react";
+import { ResumeProvider, useResume } from "@/contexts/ResumeContext";
 import ProgressHeader from "@/components/ProgressHeader";
 import FormSection from "@/components/FormSection";
 import PreviewSection from "@/components/PreviewSection";
@@ -11,6 +11,16 @@ import { Eye, EyeOff } from "lucide-react";
 function ResumeBuilderContent() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [isPreviewVisible, setIsPreviewVisible] = useState(true);
+  const { loadResume } = useResume();
+
+  // Load resume if resumeId is provided in URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const resumeId = urlParams.get('resume');
+    if (resumeId) {
+      loadResume(resumeId);
+    }
+  }, [loadResume]);
 
   return (
     <div className="min-h-screen bg-background">

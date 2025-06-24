@@ -78,7 +78,7 @@ interface ResumeContextType {
   updateData: (section: keyof ResumeData, data: any) => void;
   togglePreview: () => void;
   saveResume: () => void;
-  loadResume: () => void;
+  loadResume: (resumeId?: string) => void;
   resetResume: () => void;
 }
 
@@ -113,10 +113,29 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: "TOGGLE_PREVIEW" });
   };
 
-  const saveResume = () => {
+  const saveResume = async () => {
     if (user) {
-      // TODO: Save to database
-      console.log("Saving to database for user:", user.id);
+      try {
+        const response = await fetch('/api/resumes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: `Resume ${new Date().toLocaleDateString()}`,
+            template: state.selectedTemplate,
+            data: state.resumeData,
+          }),
+        });
+
+        if (response.ok) {
+          console.log("Resume saved to database successfully");
+        } else {
+          console.error("Failed to save resume to database");
+        }
+      } catch (error) {
+        console.error("Error saving resume:", error);
+      }
     } else {
       // Save to localStorage for guest users
       setLocalData({
@@ -127,11 +146,21 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const loadResume = () => {
-    if (user) {
-      // TODO: Load from database
-      console.log("Loading from database for user:", user.id);
-    } else {
+  const loadResume = async (resumeId?: string) => {
+    if (user && resumeId) {
+      try {
+        const response = await fetch(`/api/resumes/${resumeId}`);
+        if (response.ok) {
+          const resume = await response.json();
+          const resumeData = JSON.parse(resume.data);
+          dispatch({ type: "SET_TEMPLATE", payload: resume.template });
+          dispatch({ type: "LOAD_DATA", payload: resumeData });
+          console.log("Resume loaded from database successfully");
+        }
+      } catch (error) {
+        console.error("Error loading resume:", error);
+      }
+    } else if (!user) {
       // Load from localStorage for guest users
       if (localData) {
         dispatch({ type: "SET_TEMPLATE", payload: localData.template || "modern" });

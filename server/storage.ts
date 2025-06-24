@@ -12,7 +12,13 @@ export interface IStorage {
   // (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
-  // Other operations
+  
+  // Resume operations
+  createResume(resume: Omit<InsertResume, 'id'>): Promise<Resume>;
+  getUserResumes(userId: string): Promise<Resume[]>;
+  getResume(id: number, userId: string): Promise<Resume | undefined>;
+  updateResume(id: number, userId: string, data: Partial<InsertResume>): Promise<Resume | undefined>;
+  deleteResume(id: number, userId: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {

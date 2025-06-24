@@ -53,7 +53,7 @@ const TEMPLATES = [
 ];
 
 export default function FormSection() {
-  const { state, setStep, setTemplate } = useResume();
+  const { state, setStep, setTemplate, saveResume } = useResume();
   const { currentStep, selectedTemplate } = state;
 
   const CurrentComponent = STEP_COMPONENTS[currentStep as keyof typeof STEP_COMPONENTS];
@@ -67,8 +67,12 @@ export default function FormSection() {
   };
 
   const handleNext = () => {
-    if (currentStep < 10) {
+    if (currentStep < 8) {
       setStep(currentStep + 1);
+    } else if (currentStep === 8) {
+      // Complete Resume
+      saveResume();
+      alert("Resume completed and saved successfully!");
     }
   };
 
@@ -117,7 +121,11 @@ export default function FormSection() {
             <Button variant="outline">
               Save & Exit
             </Button>
-            <Button onClick={handleNext} disabled={currentStep === 8}>
+            <Button 
+              onClick={handleNext} 
+              disabled={false}
+              className={currentStep === 8 ? "bg-green-600 hover:bg-green-700" : ""}
+            >
               {currentStep === 8 ? "Complete Resume" : `Next: ${getNextStepName()}`}
               <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
