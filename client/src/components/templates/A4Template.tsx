@@ -214,7 +214,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={index} style={{ marginBottom: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
                 <div style={{ fontWeight: "bold", fontSize: "11px", flex: 1 }}>
-                  Project Name {project.downloadLink && "🔗"} | {project.technologyStack || "Technology Stack Used"}
+                  {project.projectName} {project.downloadLink && "🔗"} | {project.technologyStack || "Technology Stack Used"}
                 </div>
                 <div style={{ fontSize: "10px", minWidth: "80px", textAlign: "right" }}>
                   {project.startDate || "MM YYYY"}
@@ -329,7 +329,7 @@ export default function A4Template({ data }: A4TemplateProps) {
         )}
       </div>
 
-      {/* Technical Skills */}
+      {/* Technical Skills - Separate Section */}
       {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) && (
         <div style={{ marginBottom: "18px" }}>
           <h2 style={{ 
@@ -342,40 +342,40 @@ export default function A4Template({ data }: A4TemplateProps) {
           }}>
             TECHNICAL SKILLS
           </h2>
-          <div style={{ fontSize: "10px" }}>
+          <div style={{ fontSize: "10px", lineHeight: "1.4" }}>
             {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-              <div style={{ marginBottom: "3px" }}>
+              <div style={{ marginBottom: "6px" }}>
                 <strong>Languages:</strong> {technicalSkills.languages.join(", ")}
               </div>
             )}
             {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-              <div style={{ marginBottom: "3px" }}>
+              <div style={{ marginBottom: "6px" }}>
                 <strong>Technologies:</strong> {technicalSkills.technologiesFrameworks.join(", ")}
               </div>
             )}
             {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-              <div style={{ marginBottom: "3px" }}>
-                <strong>Tools:</strong> {technicalSkills.developerTools.join(", ")}
+              <div style={{ marginBottom: "6px" }}>
+                <strong>Developer Tools:</strong> {technicalSkills.developerTools.join(", ")}
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* Extracurricular */}
-      {extracurricular && extracurricular.length > 0 && (
-        <div style={{ marginBottom: "18px" }}>
-          <h2 style={{ 
-            fontSize: "12px", 
-            fontWeight: "bold", 
-            marginBottom: "8px",
-            textTransform: "uppercase",
-            borderBottom: "1px solid #000",
-            paddingBottom: "2px"
-          }}>
-            EXTRACURRICULAR
-          </h2>
-          {extracurricular.map((activity, index) => (
+      {/* Extracurricular - Always Show Section */}
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          EXTRACURRICULAR
+        </h2>
+        {extracurricular && extracurricular.length > 0 ? (
+          extracurricular.map((activity, index) => (
             <div key={index} style={{ marginBottom: "10px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
@@ -397,11 +397,28 @@ export default function A4Template({ data }: A4TemplateProps) {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <div style={{ marginBottom: "10px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Organization Name 🔗</div>
+                <div style={{ fontStyle: "italic", fontSize: "10px" }}>Role</div>
+                <div style={{ fontSize: "10px", marginTop: "2px" }}>
+                  • About the role and responsibilities carried out.
+                  <br />• Participation Certificate. 🔗
+                </div>
+              </div>
+              <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
+                <div style={{ fontWeight: "bold" }}>MM YYYY - MM YYYY</div>
+                <div style={{ fontStyle: "italic" }}>Location</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
 
-      {/* Certifications */}
+      {/* Certifications - Always Show Section */}
       <div style={{ marginBottom: "18px" }}>
         <h2 style={{ 
           fontSize: "12px", 
@@ -423,6 +440,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             {certifications.map((cert, index) => (
               <div key={index}>
                 • {cert.name} - {cert.issuer}
+                {cert.url && " 🔗"}
               </div>
             ))}
           </div>
