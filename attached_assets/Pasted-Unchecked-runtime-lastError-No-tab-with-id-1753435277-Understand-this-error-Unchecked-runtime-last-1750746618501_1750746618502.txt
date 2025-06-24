@@ -1,0 +1,61 @@
+Unchecked runtime.lastError: No tab with id: 1753435277.Understand this error
+Unchecked runtime.lastError: No tab with id: 1753435467.Understand this error
+_app-50496d2bb581e77f.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-50496d2bb581e77f.js:38 [LaunchDarkly] LaunchDarkly client initialized
+framework-eb171eab42de7326.js:1 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-eb171eab42de7326.js:1Understand this error
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'battery'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+framework-eb171eab42de7326.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-eb171eab42de7326.js:1Understand this warning
+content_iframe_banner.js:25 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/fonts/Poppins-SemiBold.ttf
+content_iframe_banner.js:25 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/fonts/Poppins-Regular.ttf
+iframe_block_page.html:1 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/fonts/Poppins-Regular.ttf
+iframe_block_page.html:1 [Intervention] Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/fonts/Poppins-Regular.ttf
+stallwart.build.js:1 stallwart: failed ping 1
+stallwart.build.js:1 stallwart: failed ping 2
+events.js:1 
+            
+            
+           Failed to load resource: net::ERR_CONNECTION_TIMED_OUTUnderstand this error
+ResumeGenius:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.

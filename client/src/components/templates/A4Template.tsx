@@ -6,73 +6,78 @@ interface A4TemplateProps {
 
 export default function A4Template({ data }: A4TemplateProps) {
   console.log("A4Template received data:", data);
+  
+  if (!data) {
+    console.log("No data provided to A4Template");
+    return <div style={{ padding: '20px' }}>No resume data available</div>;
+  }
+  
   const { personalDetails, education, projects, skills, internships, extracurricular, certifications, profileSummary, languages, hobbies, references } = data;
 
   const printStyles = {
     container: {
-      fontFamily: 'Arial, sans-serif',
-      lineHeight: '1.3',
-      color: 'black',
-      backgroundColor: 'white',
-      fontSize: '11px',
+      fontFamily: 'Inter, Arial, sans-serif',
+      lineHeight: '1.5',
+      color: '#000000',
+      backgroundColor: '#ffffff',
+      fontSize: '14px',
       width: '210mm',
       minHeight: '297mm',
-      padding: '15mm',
+      padding: '40px',
       margin: '0 auto',
       boxSizing: 'border-box' as const,
-      pageBreakInside: 'avoid' as const,
     },
     sectionHeader: {
-      fontSize: '12px',
-      fontWeight: 'bold' as const,
-      textTransform: 'uppercase' as const,
-      letterSpacing: '0.5px',
-      borderBottom: '1px solid black',
-      paddingBottom: '2px',
-      margin: '0 0 6px 0',
+      fontSize: '18px',
+      fontWeight: '600' as const,
+      color: '#1e293b',
+      borderBottom: '1px solid #e2e8f0',
+      paddingBottom: '5px',
+      marginBottom: '15px',
+      marginTop: '25px',
     },
     sectionContainer: {
-      marginBottom: '12px',
+      marginBottom: '25px',
     },
   };
 
   return (
     <div className="bg-white text-black resume-template" style={printStyles.container}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '12px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '20px', borderBottom: '2px solid #2563eb', paddingBottom: '15px' }}>
         <h1 style={{ 
-          fontSize: '18px', 
+          fontSize: '28px', 
           fontWeight: 'bold', 
-          textTransform: 'uppercase', 
-          letterSpacing: '1px', 
-          margin: '0 0 6px 0' 
+          margin: '0 0 8px 0',
+          color: '#1e293b'
         }}>
-          {personalDetails?.firstName || "NAME"} {personalDetails?.lastName || ""}
+          {personalDetails?.firstName || "Your"} {personalDetails?.lastName || "Name"}
         </h1>
-        <div style={{ fontSize: '10px', lineHeight: '1.2' }}>
-          {personalDetails?.email && <div>{personalDetails.email}</div>}
-          {personalDetails?.phone && <div>{personalDetails.phone}</div>}
-          {personalDetails?.location && <div>{personalDetails.location}</div>}
+        <div style={{ fontSize: '16px', color: '#64748b', marginBottom: '10px' }}>
+          {personalDetails?.title || "Your Professional Title"}
+        </div>
+        <div style={{ fontSize: '14px', color: '#64748b' }}>
+          {personalDetails?.email && <span>{personalDetails.email}</span>}
+          {personalDetails?.phone && personalDetails?.email && <span> | </span>}
+          {personalDetails?.phone && <span>{personalDetails.phone}</span>}
+          {personalDetails?.location && (personalDetails?.email || personalDetails?.phone) && <span> | </span>}
+          {personalDetails?.location && <span>{personalDetails.location}</span>}
+        </div>
+        <div style={{ fontSize: '14px', color: '#2563eb', marginTop: '8px' }}>
           {personalDetails?.linkedin && (
-            <div>
-              <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-                LinkedIn
-              </a>
-            </div>
+            <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none', marginRight: '15px' }}>
+              LinkedIn
+            </a>
           )}
           {personalDetails?.github && (
-            <div>
-              <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-                GitHub
-              </a>
-            </div>
+            <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none', marginRight: '15px' }}>
+              GitHub
+            </a>
           )}
           {personalDetails?.portfolio && (
-            <div>
-              <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
-                Portfolio
-              </a>
-            </div>
+            <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" style={{ color: '#2563eb', textDecoration: 'none' }}>
+              Portfolio
+            </a>
           )}
         </div>
       </div>

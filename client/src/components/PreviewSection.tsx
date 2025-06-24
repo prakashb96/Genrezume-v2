@@ -22,9 +22,11 @@ export default function PreviewSection() {
 
   const TemplateComponent = TEMPLATES[state.selectedTemplate as keyof typeof TEMPLATES] || ModernTemplate;
   
+  // Debug logging
   console.log("Preview state:", state);
   console.log("Resume data:", state.resumeData);
   console.log("Selected template:", state.selectedTemplate);
+  console.log("Template component:", TemplateComponent);
 
   const handleZoomIn = () => {
     setZoom(Math.min(zoom + 25, 150));
