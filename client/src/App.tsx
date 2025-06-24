@@ -15,14 +15,30 @@ function Router() {
 
   return (
     <Switch>
+      <Route path="/builder">
+        <ResumeBuilder />
+      </Route>
       {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
+        <>
+          <Route path="/" component={Landing} />
+          <Route path="/profile">
+            <div className="min-h-screen flex items-center justify-center">
+              <div className="text-center">
+                <h1 className="text-2xl font-bold text-textprimary mb-4">Please Sign In</h1>
+                <p className="text-slate-600 mb-4">You need to sign in to access your profile.</p>
+                <button 
+                  onClick={() => window.location.href = '/api/login'}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+          </Route>
+        </>
       ) : (
         <>
           <Route path="/" component={Home} />
-          <Route path="/builder">
-            <ResumeBuilder />
-          </Route>
           <Route path="/profile">
             <Profile />
           </Route>

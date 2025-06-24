@@ -9,7 +9,21 @@ export default function A4Template({ data }: A4TemplateProps) {
     return <div style={{ padding: '20px' }}>No resume data available</div>;
   }
   
-  const { personalDetails, education, projects, skills, internships, extracurricular, certifications, profileSummary, languages, hobbies, references } = data;
+  const { 
+    personalDetails, 
+    education = [], 
+    projects = [], 
+    technicalSkills,
+    coursework,
+    courseworkSkills,
+    internships = [], 
+    extracurricular = [], 
+    certifications = [], 
+    profileSummary, 
+    languages = [], 
+    hobbies, 
+    references = [] 
+  } = data;
 
   const printStyles = {
     container: {
@@ -87,16 +101,21 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={edu.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{edu.institutionName || edu.collegeName}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{edu.collegeName}</div>
                   <div style={{ fontStyle: 'italic', fontSize: '10px' }}>
-                    {edu.degree || edu.degreeName} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`} {edu.gpa && `• GPA: ${edu.gpa}`}
+                    {edu.degreeName} {edu.cgpa && `• CGPA: ${edu.cgpa}`}
                   </div>
+                  {edu.description && (
+                    <div style={{ fontSize: '9px', marginTop: '2px', color: '#666' }}>
+                      {edu.description}
+                    </div>
+                  )}
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
                   <div>{edu.startDate} - {edu.endDate || "Present"}</div>
-                  {edu.location && (
+                  {(edu.city || edu.country) && (
                     <div style={{ fontStyle: 'italic' }}>
-                      {edu.location}
+                      {edu.city}{edu.city && edu.country && ', '}{edu.country}
                     </div>
                   )}
                 </div>
@@ -130,25 +149,38 @@ export default function A4Template({ data }: A4TemplateProps) {
       )}
 
       {/* Technical Skills */}
-      {skills && (skills.technical?.length > 0 || skills.frameworks?.length > 0 || skills.tools?.length > 0) && (
+      {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) && (
         <div style={printStyles.sectionContainer}>
           <h2 style={printStyles.sectionHeader}>TECHNICAL SKILLS</h2>
           <div style={{ fontSize: '10px' }}>
-            {skills.technical && skills.technical.length > 0 && (
+            {technicalSkills.languages && technicalSkills.languages.length > 0 && (
               <div style={{ marginBottom: '4px' }}>
-                <strong>Languages:</strong> {skills.technical.join(', ')}
+                <strong>Programming Languages:</strong> {technicalSkills.languages.join(', ')}
               </div>
             )}
-            {skills.frameworks && skills.frameworks.length > 0 && (
+            {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
               <div style={{ marginBottom: '4px' }}>
-                <strong>Frameworks:</strong> {skills.frameworks.join(', ')}
+                <strong>Technologies & Frameworks:</strong> {technicalSkills.technologiesFrameworks.join(', ')}
               </div>
             )}
-            {skills.tools && skills.tools.length > 0 && (
+            {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
               <div style={{ marginBottom: '4px' }}>
-                <strong>Tools:</strong> {skills.tools.join(', ')}
+                <strong>Developer Tools:</strong> {technicalSkills.developerTools.join(', ')}
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Coursework */}
+      {(coursework && coursework.length > 0) || (courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0) && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>RELEVANT COURSEWORK</h2>
+          <div style={{ fontSize: '10px' }}>
+            {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 
+              ? courseworkSkills.selectedCourses.join(' • ')
+              : coursework && coursework.join(' • ')
+            }
           </div>
         </div>
       )}
@@ -161,14 +193,14 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={project.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '11px', flex: 1 }}>
-                  {project.name || project.projectName} 
-                  {project.githubUrl && (
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
+                  {project.projectName} 
+                  {project.downloadLink && (
+                    <a href={project.downloadLink} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
                   )}
-                  {project.technologies && ` | ${project.technologies}`}
+                  {project.technologyStack && ` | ${project.technologyStack}`}
                 </div>
                 <div style={{ fontSize: '10px', minWidth: '80px', textAlign: 'right' }}>
-                  {project.startDate || 'MM YYYY'}
+                  {project.startDate && project.endDate ? `${project.startDate} - ${project.endDate}` : project.startDate || 'MM YYYY'}
                 </div>
               </div>
               <div style={{ fontSize: '10px', marginBottom: '4px' }}>
@@ -222,16 +254,16 @@ export default function A4Template({ data }: A4TemplateProps) {
                   <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
                     {internship.companyName} 
                   </div>
-                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.jobTitle || internship.roleName}</div>
+                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.roleName}</div>
                   <div style={{ fontSize: '10px', marginTop: '2px' }}>
                     • {internship.description || 'About the role and responsibilities carried out.'}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
                   <div>{internship.startDate} - {internship.endDate || "Present"}</div>
-                  {internship.location && (
+                  {(internship.city || internship.country) && (
                     <div style={{ fontStyle: 'italic' }}>
-                      {internship.location}
+                      {internship.city}{internship.city && internship.country && ', '}{internship.country}
                     </div>
                   )}
                 </div>
@@ -299,11 +331,11 @@ export default function A4Template({ data }: A4TemplateProps) {
       )}
 
       {/* Hobbies & Interests */}
-      {hobbies?.interests && (
+      {hobbies?.hobbies && hobbies.hobbies.length > 0 && (
         <div style={printStyles.sectionContainer}>
           <h2 style={printStyles.sectionHeader}>INTERESTS & HOBBIES</h2>
           <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
-            {hobbies.interests}
+            {hobbies.hobbies.join(' • ')}
           </div>
         </div>
       )}
@@ -317,6 +349,7 @@ export default function A4Template({ data }: A4TemplateProps) {
               <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{ref.name}</div>
               <div style={{ fontSize: '10px' }}>{ref.title} at {ref.company}</div>
               <div style={{ fontSize: '10px' }}>{ref.email} | {ref.phone}</div>
+              <div style={{ fontSize: '9px', color: '#666' }}>Relationship: {ref.relationship}</div>
             </div>
           ))}
         </div>
