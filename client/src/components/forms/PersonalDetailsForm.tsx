@@ -185,12 +185,42 @@ export default function PersonalDetailsForm() {
 
             <FormField
               control={form.control}
+              name="github"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>GitHub Profile</FormLabel>
+                  <FormControl>
+                    <Input type="url" placeholder="https://github.com/johndoe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
+              name="portfolio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Portfolio Website</FormLabel>
+                  <FormControl>
+                    <Input type="url" placeholder="https://johndoe.dev" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Portfolio/Website</FormLabel>
+                  <FormLabel>Other Website</FormLabel>
                   <FormControl>
-                    <Input type="url" placeholder="https://johndoe.dev" {...field} />
+                    <Input type="url" placeholder="https://blog.johndoe.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

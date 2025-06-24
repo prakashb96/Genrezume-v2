@@ -54,6 +54,8 @@ export const personalDetailsSchema = z.object({
   phone: z.string().min(1, "Phone number is required"),
   location: z.string().optional(),
   linkedin: z.string().url().optional().or(z.literal("")),
+  github: z.string().url().optional().or(z.literal("")),
+  portfolio: z.string().url().optional().or(z.literal("")),
   website: z.string().url().optional().or(z.literal("")),
   photo: z.string().optional(),
 });
@@ -105,15 +107,7 @@ export const projectItemSchema = z.object({
 });
 
 export const courseworkSkillsSchema = z.object({
-  dataStructures: z.boolean().default(false),
-  networkSecurity: z.boolean().default(false),
-  artificialIntelligence: z.boolean().default(false),
-  webDevelopment: z.boolean().default(false),
-  operatingSystems: z.boolean().default(false),
-  databaseManagement: z.boolean().default(false),
-  oopsConceptsAdvanced: z.boolean().default(false),
-  androidDevelopment: z.boolean().default(false),
-  systemDesign: z.boolean().default(false),
+  selectedCourses: z.array(z.string()).default([]),
 });
 
 export const technicalSkillsSchema = z.object({

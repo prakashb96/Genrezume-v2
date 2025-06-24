@@ -1,8 +1,8 @@
+import React, { useState } from "react";
 import { useResume } from "@/contexts/ResumeContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
 
 const AVAILABLE_COURSEWORK = [
   "Data Structures and Algorithms",
@@ -29,7 +29,8 @@ const AVAILABLE_COURSEWORK = [
 
 export default function CourseworkSkillsForm() {
   const { state, updateData } = useResume();
-  const [selectedCoursework, setSelectedCoursework] = useState<string[]>([]);
+  const existingCourses = state.resumeData.courseworkSkills?.selectedCourses || [];
+  const [selectedCoursework, setSelectedCoursework] = useState<string[]>(existingCourses);
 
   const handleCourseworkChange = (course: string, checked: boolean) => {
     const updated = checked 
@@ -39,6 +40,13 @@ export default function CourseworkSkillsForm() {
     setSelectedCoursework(updated);
     updateData("courseworkSkills", { selectedCourses: updated });
   };
+
+  // Initialize the form with existing data
+  React.useEffect(() => {
+    if (existingCourses.length > 0 && selectedCoursework.length === 0) {
+      setSelectedCoursework(existingCourses);
+    }
+  }, [existingCourses, selectedCoursework.length]);
 
   return (
     <div className="space-y-6">

@@ -52,13 +52,25 @@ export default function ProfessionalTemplate({ data }: ProfessionalTemplateProps
               {personalDetails?.linkedin && (
                 <div className="flex items-center space-x-2">
                   <Linkedin className="w-4 h-4" />
-                  <span className="break-all text-xs">{personalDetails.linkedin.replace("https://", "")}</span>
+                  <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-xs">
+                    LinkedIn
+                  </a>
                 </div>
               )}
-              {personalDetails?.website && (
+              {personalDetails?.github && (
                 <div className="flex items-center space-x-2">
                   <Globe className="w-4 h-4" />
-                  <span className="break-all text-xs">{personalDetails.website.replace("https://", "")}</span>
+                  <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-xs">
+                    GitHub
+                  </a>
+                </div>
+              )}
+              {personalDetails?.portfolio && (
+                <div className="flex items-center space-x-2">
+                  <Globe className="w-4 h-4" />
+                  <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-xs">
+                    Portfolio
+                  </a>
                 </div>
               )}
             </div>

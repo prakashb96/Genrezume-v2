@@ -21,8 +21,27 @@ export default function MinimalTemplate({ data }: MinimalTemplateProps) {
           {personalDetails?.email && <div>{personalDetails.email}</div>}
           {personalDetails?.phone && <div>{personalDetails.phone}</div>}
           {personalDetails?.location && <div>{personalDetails.location}</div>}
-          {personalDetails?.linkedin && <div>{personalDetails.linkedin}</div>}
-          {personalDetails?.website && <div>{personalDetails.website}</div>}
+          {personalDetails?.linkedin && (
+            <div>
+              <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                LinkedIn
+              </a>
+            </div>
+          )}
+          {personalDetails?.github && (
+            <div>
+              <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                GitHub
+              </a>
+            </div>
+          )}
+          {personalDetails?.portfolio && (
+            <div>
+              <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                Portfolio
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

@@ -50,6 +50,30 @@ export default function CreativeTemplate({ data }: CreativeTemplateProps) {
                   <span>{personalDetails.location}</span>
                 </div>
               )}
+              {personalDetails?.linkedin && (
+                <div className="flex items-center space-x-2">
+                  <Linkedin className="w-4 h-4" />
+                  <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" className="text-purple-100 hover:underline">
+                    LinkedIn
+                  </a>
+                </div>
+              )}
+              {personalDetails?.github && (
+                <div className="flex items-center space-x-2">
+                  <Globe className="w-4 h-4" />
+                  <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" className="text-purple-100 hover:underline">
+                    GitHub
+                  </a>
+                </div>
+              )}
+              {personalDetails?.portfolio && (
+                <div className="flex items-center space-x-2">
+                  <Globe className="w-4 h-4" />
+                  <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" className="text-purple-100 hover:underline">
+                    Portfolio
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

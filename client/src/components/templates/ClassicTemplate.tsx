@@ -22,6 +22,23 @@ export default function ClassicTemplate({ data }: ClassicTemplateProps) {
           {personalDetails?.phone && <span>{personalDetails.phone}</span>}
           {personalDetails?.location && <span>{personalDetails.location}</span>}
         </div>
+        <div className="flex justify-center space-x-4 text-sm text-slate-600 mt-2">
+          {personalDetails?.linkedin && (
+            <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              LinkedIn
+            </a>
+          )}
+          {personalDetails?.github && (
+            <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              GitHub
+            </a>
+          )}
+          {personalDetails?.portfolio && (
+            <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+              Portfolio
+            </a>
+          )}
+        </div>
       </div>
 
       {/* Profile Summary */}

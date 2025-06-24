@@ -52,7 +52,27 @@ export default function A4Template({ data }: A4TemplateProps) {
           {personalDetails?.email && <div>{personalDetails.email}</div>}
           {personalDetails?.phone && <div>{personalDetails.phone}</div>}
           {personalDetails?.location && <div>{personalDetails.location}</div>}
-          {personalDetails?.linkedin && <div>{personalDetails.linkedin}</div>}
+          {personalDetails?.linkedin && (
+            <div>
+              <a href={personalDetails.linkedin} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                LinkedIn
+              </a>
+            </div>
+          )}
+          {personalDetails?.github && (
+            <div>
+              <a href={personalDetails.github} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                GitHub
+              </a>
+            </div>
+          )}
+          {personalDetails?.portfolio && (
+            <div>
+              <a href={personalDetails.portfolio} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+                Portfolio
+              </a>
+            </div>
+          )}
         </div>
       </div>
 
@@ -99,28 +119,16 @@ export default function A4Template({ data }: A4TemplateProps) {
       {/* Coursework/Skills */}
       <div style={printStyles.sectionContainer}>
         <h2 style={printStyles.sectionHeader}>COURSEWORK / SKILLS</h2>
-        {courseworkSkills ? (
+        {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 ? (
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(3, 1fr)', 
             gap: '4px 16px', 
             fontSize: '10px' 
           }}>
-            {Object.entries(courseworkSkills)
-              .filter(([_, selected]) => selected)
-              .map(([course, _]) => (
-                <div key={course}>
-                  {course === 'dataStructures' && 'Data Structures &'}
-                  {course === 'networkSecurity' && 'Network Security'}
-                  {course === 'artificialIntelligence' && 'Artificial Intelligence'}
-                  {course === 'webDevelopment' && 'Web Development'}
-                  {course === 'operatingSystems' && 'Operating Systems'}
-                  {course === 'databaseManagement' && 'Database Management'}
-                  {course === 'oopsConceptsAdvanced' && 'OOPS Concepts'}
-                  {course === 'androidDevelopment' && 'Android Development'}
-                  {course === 'systemDesign' && 'System Design'}
-                </div>
-              ))}
+            {courseworkSkills.selectedCourses.map((course, index) => (
+              <div key={index}>{course}</div>
+            ))}
           </div>
         ) : (
           <div style={{ 
@@ -339,16 +347,19 @@ export default function A4Template({ data }: A4TemplateProps) {
         {certifications && certifications.length > 0 ? (
           <div style={{ 
             display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
+            gridTemplateColumns: 'repeat(2, 1fr)', 
             gap: '4px 16px', 
             fontSize: '10px' 
           }}>
             {certifications.map((cert, index) => (
-              <div key={cert.id || index}>
-                • {cert.name}
-                {cert.url && (
-                  <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', marginLeft: '4px' }}>🔗</a>
-                )}
+              <div key={cert.id || index} style={{ marginBottom: '4px' }}>
+                <div style={{ fontWeight: 'bold' }}>• {cert.name}</div>
+                <div style={{ fontSize: '9px', color: '#666', marginLeft: '8px' }}>
+                  {cert.issuer} - {cert.date}
+                  {cert.url && (
+                    <a href={cert.url} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', marginLeft: '4px' }}>🔗</a>
+                  )}
+                </div>
               </div>
             ))}
           </div>
