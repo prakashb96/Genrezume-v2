@@ -142,60 +142,49 @@ export default function A4Template({ data }: A4TemplateProps) {
         )}
       </div>
 
-      {/* Coursework/Skills */}
-      {((courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0) || 
-        (technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0))) && (
-        <div style={{ marginBottom: "18px" }}>
-          <h2 style={{ 
-            fontSize: "12px", 
-            fontWeight: "bold", 
-            marginBottom: "8px",
-            textTransform: "uppercase",
-            borderBottom: "1px solid #000",
-            paddingBottom: "2px"
+      {/* Coursework / Skills - Always Show Section */}
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          COURSEWORK / SKILLS
+        </h2>
+        {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 ? (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(3, 1fr)", 
+            gap: "8px 20px", 
+            fontSize: "10px" 
           }}>
-            COURSEWORK / SKILLS
-          </h2>
-          
-          {/* Coursework */}
-          {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 && (
-            <div style={{ marginBottom: "8px" }}>
-              <div style={{ fontSize: "10px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-                {courseworkSkills.selectedCourses.map((course, index) => (
-                  <div key={index}>• {course}</div>
-                ))}
+            {courseworkSkills.selectedCourses.map((course, index) => (
+              <div key={index} style={{ marginBottom: "4px" }}>
+                • {course}
               </div>
-            </div>
-          )}
-          
-          {/* Technical Skills */}
-          {technicalSkills && (
-            <div style={{ fontSize: "10px" }}>
-              {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-                  {technicalSkills.languages.map((lang, index) => (
-                    <div key={index}>• {lang}</div>
-                  ))}
-                </div>
-              )}
-              {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-                  {technicalSkills.technologiesFrameworks.map((tech, index) => (
-                    <div key={index}>• {tech}</div>
-                  ))}
-                </div>
-              )}
-              {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-                <div style={{ marginBottom: "4px", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }}>
-                  {technicalSkills.developerTools.map((tool, index) => (
-                    <div key={index}>• {tool}</div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+            ))}
+          </div>
+        ) : (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(3, 1fr)", 
+            gap: "8px 20px", 
+            fontSize: "10px" 
+          }}>
+            <div>• Data Structures & Algorithms</div>
+            <div>• Network Security</div>
+            <div>• Artificial Intelligence</div>
+            <div>• Operating Systems</div>
+            <div>• Database Management System (DBMS)</div>
+            <div>• Web Development</div>
+            <div>• OOPS Concept</div>
+            <div>• Android Development</div>
+          </div>
+        )}
+      </div>
 
       {/* Projects */}
       <div style={{ marginBottom: "18px" }}>
@@ -396,13 +385,11 @@ export default function A4Template({ data }: A4TemplateProps) {
             </div>
             <div>
               <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Developer Tools:</div>
-              <div style={{ marginBottom: "2px" }}>• Network Security</div>
-              <div style={{ marginBottom: "2px" }}>• Database Management</div>
-              <div style={{ marginBottom: "2px" }}>• System (DBMS)</div>
-              <div style={{ marginBottom: "2px" }}>• Artificial Intelligence</div>
-              <div style={{ marginBottom: "2px" }}>• OOPS Concept</div>
-              <div style={{ marginBottom: "2px" }}>• Web Development</div>
-              <div style={{ marginBottom: "2px" }}>• Android Development</div>
+              <div style={{ marginBottom: "2px" }}>• VS Code, Android Studio</div>
+              <div style={{ marginBottom: "2px" }}>• DataGrip, Golang, IntelliJ</div>
+              <div style={{ marginBottom: "2px" }}>• PyCharm, DevOPS, Netlify</div>
+              <div style={{ marginBottom: "2px" }}>• NodeJS, ReactJS, Express.js</div>
+              <div style={{ marginBottom: "2px" }}>• Git, Mongo, Flutter</div>
             </div>
           </div>
         )}
