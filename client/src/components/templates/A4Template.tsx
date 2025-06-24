@@ -331,65 +331,33 @@ export default function A4Template({ data }: A4TemplateProps) {
           TECHNICAL SKILLS
         </h2>
         {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) ? (
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(3, 1fr)", 
-            gap: "8px 15px", 
-            fontSize: "10px",
-            lineHeight: "1.3"
-          }}>
+          <div style={{ fontSize: "10px", lineHeight: "1.4" }}>
             {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-              <div>
-                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Languages:</div>
-                {technicalSkills.languages.map((lang, index) => (
-                  <div key={index} style={{ marginBottom: "2px" }}>• {lang}</div>
-                ))}
+              <div style={{ marginBottom: "6px" }}>
+                <strong>Languages:</strong> {technicalSkills.languages.join(", ")}
               </div>
             )}
             {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-              <div>
-                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Technologies:</div>
-                {technicalSkills.technologiesFrameworks.map((tech, index) => (
-                  <div key={index} style={{ marginBottom: "2px" }}>• {tech}</div>
-                ))}
+              <div style={{ marginBottom: "6px" }}>
+                <strong>Technologies:</strong> {technicalSkills.technologiesFrameworks.join(", ")}
               </div>
             )}
             {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-              <div>
-                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Developer Tools:</div>
-                {technicalSkills.developerTools.map((tool, index) => (
-                  <div key={index} style={{ marginBottom: "2px" }}>• {tool}</div>
-                ))}
+              <div style={{ marginBottom: "6px" }}>
+                <strong>Developer Tools:</strong> {technicalSkills.developerTools.join(", ")}
               </div>
             )}
           </div>
         ) : (
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(3, 1fr)", 
-            gap: "8px 15px", 
-            fontSize: "10px",
-            lineHeight: "1.3"
-          }}>
-            <div>
-              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Languages:</div>
-              <div style={{ marginBottom: "2px" }}>• Python, Java, C, C++</div>
-              <div style={{ marginBottom: "2px" }}>• Dart, JavaScript, SQL</div>
-              <div style={{ marginBottom: "2px" }}>• NoSQL, R, XML, Go</div>
+          <div style={{ fontSize: "10px", lineHeight: "1.4" }}>
+            <div style={{ marginBottom: "6px" }}>
+              <strong>Languages:</strong> Python, Java, C, C++, Dart, JavaScript, SQL, NoSQL, R, XML, Go
             </div>
-            <div>
-              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Technologies:</div>
-              <div style={{ marginBottom: "2px" }}>• React, Flutter, Firebase</div>
-              <div style={{ marginBottom: "2px" }}>• Node.js, ReactJS, Git</div>
-              <div style={{ marginBottom: "2px" }}>• Mongo, Flutter</div>
+            <div style={{ marginBottom: "6px" }}>
+              <strong>Technologies:</strong> React, Flutter, Firebase, Node.js, ReactJS, Git, MongoDB
             </div>
-            <div>
-              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Developer Tools:</div>
-              <div style={{ marginBottom: "2px" }}>• VS Code, Android Studio</div>
-              <div style={{ marginBottom: "2px" }}>• DataGrip, Golang, IntelliJ</div>
-              <div style={{ marginBottom: "2px" }}>• PyCharm, DevOPS, Netlify</div>
-              <div style={{ marginBottom: "2px" }}>• NodeJS, ReactJS, Express.js</div>
-              <div style={{ marginBottom: "2px" }}>• Git, Mongo, Flutter</div>
+            <div style={{ marginBottom: "6px" }}>
+              <strong>Developer Tools:</strong> VS Code, Android Studio, DataGrip, IntelliJ, PyCharm, Netlify
             </div>
           </div>
         )}
