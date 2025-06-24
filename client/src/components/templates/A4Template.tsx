@@ -5,6 +5,7 @@ interface A4TemplateProps {
 }
 
 export default function A4Template({ data }: A4TemplateProps) {
+  console.log("A4Template received data:", data);
   const { personalDetails, education, projects, skills, internships, extracurricular, certifications, profileSummary, languages, hobbies, references } = data;
 
   const printStyles = {
@@ -36,7 +37,7 @@ export default function A4Template({ data }: A4TemplateProps) {
   };
 
   return (
-    <div className="bg-white text-black resume-template" id="resume-preview" style={printStyles.container}>
+    <div className="bg-white text-black resume-template" style={printStyles.container}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '12px' }}>
         <h1 style={{ 
