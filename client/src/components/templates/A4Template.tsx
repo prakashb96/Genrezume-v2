@@ -57,47 +57,23 @@ export default function A4Template({ data }: A4TemplateProps) {
           {personalDetails?.location && <span>📍 {personalDetails.location}</span>}
         </div>
         <div style={{ fontSize: "10px", marginTop: "3px", display: "flex", justifyContent: "center", gap: "15px" }}>
-          {personalDetails?.linkedin ? (
-            <span>
-              LinkedIn: <a href={personalDetails.linkedin} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                {personalDetails.linkedin.replace('https://', '').replace('http://', '')}
-              </a>
-            </span>
-          ) : (
-            <span>
-              LinkedIn: <a href="https://www.linkedin.com/in/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                www.linkedin.com/in/prakashb96
-              </a>
-            </span>
-          )}
+          <span>
+            <a href="https://www.linkedin.com/in/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>: www.linkedin.com/in/prakashb96
+          </span>
           
-          {personalDetails?.github ? (
-            <span>
-              GitHub: <a href={personalDetails.github} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                {personalDetails.github.replace('https://', '').replace('http://', '')}
-              </a>
-            </span>
-          ) : (
-            <span>
-              GitHub: <a href="https://github.com/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                github.com/prakashb96
-              </a>
-            </span>
-          )}
+          <span>
+            <a href="https://github.com/prakashb96" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+              GitHub
+            </a>: github.com/prakashb96
+          </span>
           
-          {personalDetails?.portfolio ? (
-            <span>
-              Portfolio: <a href={personalDetails.portfolio} style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                {personalDetails.portfolio.replace('https://', '').replace('http://', '')}
-              </a>
-            </span>
-          ) : (
-            <span>
-              Portfolio: <a href="https://prakashb96.dev" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
-                prakashb96.dev
-              </a>
-            </span>
-          )}
+          <span>
+            <a href="https://prakashb96.dev" style={{ color: "#0066cc", textDecoration: "underline" }} target="_blank" rel="noopener noreferrer">
+              Portfolio
+            </a>: prakashb96.dev
+          </span>
         </div>
       </div>
 
