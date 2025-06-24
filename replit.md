@@ -21,9 +21,9 @@ Genrezume is a modern web application that allows users to create professional r
 - **Development**: Hot reload with Vite middleware integration
 
 ### Authentication
-- **Primary**: Firebase Authentication
-- **Methods**: Email/password and Google OAuth
-- **Session Management**: Firebase Auth state persistence
+- **Primary**: Replit Authentication (OpenID Connect)
+- **Methods**: Google OAuth through Replit's secure system
+- **Session Management**: PostgreSQL-backed sessions with passport.js
 - **Guest Mode**: Local storage fallback for unauthenticated users
 
 ### Data Layer
@@ -74,9 +74,9 @@ Genrezume is a modern web application that allows users to create professional r
 5. PDF export generates from preview DOM element
 
 ### Data Persistence
-- **Authenticated Users**: Firebase Auth + planned PostgreSQL storage
+- **Authenticated Users**: Replit Auth + PostgreSQL storage
 - **Guest Users**: Local storage only
-- **Session Management**: Firebase Auth state persistence
+- **Session Management**: PostgreSQL-backed sessions
 
 ## External Dependencies
 
@@ -112,9 +112,9 @@ Genrezume is a modern web application that allows users to create professional r
 - **Environment**: Production Node.js with compiled assets
 
 ### Database Setup
-- **Current**: In-memory storage with local persistence
-- **Planned**: PostgreSQL with Drizzle ORM migrations
-- **Schema**: User accounts, resume data with JSON fields
+- **Current**: PostgreSQL with Drizzle ORM
+- **Schema**: User accounts with Replit Auth integration, resume data with JSON fields
+- **Session Storage**: PostgreSQL-backed session management
 
 ## User Preferences
 
@@ -122,5 +122,10 @@ Preferred communication style: Simple, everyday language.
 
 ## Changelog
 
-Changelog:
-- June 24, 2025. Initial setup
+## Recent Changes
+
+- June 24, 2025: Implemented Google authentication through Replit's secure OAuth system
+- June 24, 2025: Migrated from Firebase to PostgreSQL database with Drizzle ORM
+- June 24, 2025: Updated authentication flow with session-based management
+- June 24, 2025: Created landing page for unauthenticated users
+- June 24, 2025: Initial project setup

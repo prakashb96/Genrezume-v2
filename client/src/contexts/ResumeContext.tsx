@@ -1,6 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from "react";
 import { ResumeData } from "@shared/schema";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 interface ResumeState {
@@ -115,8 +115,8 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
 
   const saveResume = () => {
     if (user) {
-      // TODO: Save to Firestore
-      console.log("Saving to Firestore for user:", user.uid);
+      // TODO: Save to database
+      console.log("Saving to database for user:", user.id);
     } else {
       // Save to localStorage for guest users
       setLocalData({
@@ -129,8 +129,8 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
 
   const loadResume = () => {
     if (user) {
-      // TODO: Load from Firestore
-      console.log("Loading from Firestore for user:", user.uid);
+      // TODO: Load from database
+      console.log("Loading from database for user:", user.id);
     } else {
       // Load from localStorage for guest users
       if (localData) {
