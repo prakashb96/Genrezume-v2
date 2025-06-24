@@ -91,34 +91,106 @@ export default function Profile() {
 
   const downloadResume = async (resume: Resume) => {
     try {
-      // Create a temporary preview element
+      // Parse the resume data
+      const resumeData = JSON.parse(resume.data);
+      console.log('Resume data for download:', resumeData);
+
+      // Create a temporary invisible iframe to render the resume
+      const iframe = document.createElement('iframe');
+      iframe.style.position = 'absolute';
+      iframe.style.left = '-9999px';
+      iframe.style.width = '794px';
+      iframe.style.height = '1123px'; // A4 height
+      iframe.style.border = 'none';
+      
+      document.body.appendChild(iframe);
+      
+      // Wait for iframe to load
+      await new Promise(resolve => {
+        iframe.onload = resolve;
+        iframe.src = 'about:blank';
+      });
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (!iframeDoc) throw new Error('Could not access iframe document');
+
+      // Write the resume HTML to iframe
+      iframeDoc.open();
+      iframeDoc.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <title>Resume</title>
+            <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
+              body { 
+                font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+                line-height: 1.5;
+                color: #000;
+                background: #fff;
+                width: 794px;
+                margin: 0 auto;
+                padding: 40px;
+              }
+              .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2563eb; padding-bottom: 20px; }
+              .name { font-size: 32px; font-weight: bold; margin: 0; color: #1e293b; }
+              .title { font-size: 18px; color: #64748b; margin: 8px 0; }
+              .contact { font-size: 14px; color: #64748b; margin-top: 12px; }
+              .links { font-size: 14px; color: #2563eb; margin-top: 8px; }
+              .links a { color: #2563eb; text-decoration: none; }
+              .section { margin-bottom: 25px; }
+              .section-title { font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+              .item { margin-bottom: 15px; }
+              .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+              .item-title { font-size: 16px; font-weight: 600; margin: 0; }
+              .item-date { font-size: 14px; color: #64748b; }
+              .item-subtitle { font-size: 14px; color: #64748b; margin: 2px 0; }
+              .item-description { font-size: 14px; margin: 8px 0; }
+              .skills-grid { font-size: 14px; line-height: 1.6; }
+              .skills-grid p { margin: 5px 0; }
+              .skills-grid strong { font-weight: 600; }
+            </style>
+          </head>
+          <body>
+            ${generateResumeHTML(resume).replace('id="resume-preview"', '')}
+          </body>
+        </html>
+      `);
+      iframeDoc.close();
+
+      // Wait for content to render
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // Now create the preview element for PDF export
       const tempDiv = document.createElement('div');
-      tempDiv.id = 'resume-preview'; // Use the same ID that usePDFExport expects
+      tempDiv.id = 'resume-preview';
       tempDiv.style.position = 'absolute';
       tempDiv.style.left = '-9999px';
       tempDiv.style.width = '794px';
       tempDiv.style.maxWidth = '794px';
-      tempDiv.innerHTML = generateResumeHTML(resume);
+      tempDiv.innerHTML = iframeDoc.body.innerHTML;
       document.body.appendChild(tempDiv);
 
-      // Wait for the element to be added to DOM
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Wait for DOM update
+      await new Promise(resolve => setTimeout(resolve, 200));
 
       // Export to PDF
       await exportToPDF(`${resume.title}.pdf`);
 
       // Clean up
       document.body.removeChild(tempDiv);
+      document.body.removeChild(iframe);
 
       toast({
-        title: "Success",
+        title: "Success", 
         description: "Resume downloaded successfully",
       });
     } catch (error) {
       console.error('Error downloading resume:', error);
       toast({
         title: "Error",
-        description: "Failed to download resume",
+        description: `Failed to download resume: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }
@@ -168,17 +240,102 @@ export default function Profile() {
         </div>
         ` : ''}
 
-        ${data.experience && data.experience.length > 0 ? `
+        ${data.internships && data.internships.length > 0 ? `
         <div style="margin-bottom: 25px;">
-          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Experience</h2>
-          ${data.experience.map((exp: any) => `
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Internships</h2>
+          ${data.internships.map((intern: any) => `
             <div style="margin-bottom: 20px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${exp.jobTitle || ''}</h3>
-                <span style="font-size: 14px; color: #64748b;">${exp.startDate || ''} - ${exp.endDate || 'Present'}</span>
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${intern.jobTitle || ''}</h3>
+                <span style="font-size: 14px; color: #64748b;">${intern.startDate || ''} - ${intern.endDate || 'Present'}</span>
               </div>
-              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">${exp.companyName || ''} | ${exp.location || ''}</p>
-              ${exp.description ? `<p style="font-size: 14px; margin: 8px 0;">${exp.description}</p>` : ''}
+              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">${intern.companyName || ''} | ${intern.location || ''}</p>
+              ${intern.description ? `<p style="font-size: 14px; margin: 8px 0;">${intern.description}</p>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.extracurricular && data.extracurricular.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Extracurricular Activities</h2>
+          ${data.extracurricular.map((activity: any) => `
+            <div style="margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${activity.organizationName || ''}</h3>
+                <span style="font-size: 14px; color: #64748b;">${activity.startDate || ''} - ${activity.endDate || 'Present'}</span>
+              </div>
+              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">${activity.roleName || ''}</p>
+              ${activity.description ? `<p style="font-size: 14px; margin: 8px 0;">${activity.description}</p>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.certifications && data.certifications.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Certifications</h2>
+          ${data.certifications.map((cert: any) => `
+            <div style="margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${cert.name || ''}</h3>
+                <span style="font-size: 14px; color: #64748b;">${cert.date || ''}</span>
+              </div>
+              <p style="font-size: 14px; color: #64748b; margin: 0;">${cert.issuer || ''}</p>
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.coursework && data.coursework.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Relevant Coursework</h2>
+          <div style="font-size: 14px;">
+            <p>${Array.isArray(data.coursework) ? data.coursework.join(', ') : data.coursework}</p>
+          </div>
+        </div>
+        ` : ''}
+
+        ${data.profileSummary && data.profileSummary.summary ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Professional Summary</h2>
+          <div style="font-size: 14px; line-height: 1.6;">
+            <p>${data.profileSummary.summary}</p>
+          </div>
+        </div>
+        ` : ''}
+
+        ${data.languages && data.languages.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Languages</h2>
+          <div style="font-size: 14px;">
+            ${data.languages.map((lang: any) => `
+              <div style="margin-bottom: 8px;">
+                <span style="font-weight: 600;">${lang.language || ''}</span>
+                ${lang.proficiency ? ` - ${lang.proficiency}` : ''}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ` : ''}
+
+        ${data.hobbies && data.hobbies.interests ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Interests & Hobbies</h2>
+          <div style="font-size: 14px;">
+            <p>${data.hobbies.interests}</p>
+          </div>
+        </div>
+        ` : ''}
+
+        ${data.references && data.references.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">References</h2>
+          ${data.references.map((ref: any) => `
+            <div style="margin-bottom: 15px;">
+              <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${ref.name || ''}</h3>
+              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">${ref.title || ''} at ${ref.company || ''}</p>
+              <p style="font-size: 14px; color: #64748b; margin: 0;">${ref.email || ''} | ${ref.phone || ''}</p>
             </div>
           `).join('')}
         </div>

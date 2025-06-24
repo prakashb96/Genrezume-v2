@@ -32,15 +32,28 @@ export default function ProgressHeader() {
 
   const handleDownload = async () => {
     try {
-      await exportToPDF();
+      // Check if there's actually content in the preview
+      const previewElement = document.getElementById('resume-preview');
+      if (!previewElement) {
+        throw new Error('Resume preview not found. Please make sure the preview is visible.');
+      }
+
+      // Check if preview has content
+      const hasContent = previewElement.textContent?.trim();
+      if (!hasContent || hasContent.length < 50) {
+        throw new Error('Resume appears to be empty. Please fill in your information first.');
+      }
+
+      await exportToPDF(`resume_${new Date().toISOString().split('T')[0]}.pdf`);
       toast({
         title: "PDF Downloaded",
         description: "Your resume has been downloaded as PDF!",
       });
     } catch (error) {
+      console.error('Download error:', error);
       toast({
         title: "Download Failed",
-        description: "There was an error downloading your resume. Please try again.",
+        description: error instanceof Error ? error.message : "There was an error downloading your resume. Please try again.",
         variant: "destructive",
       });
     }

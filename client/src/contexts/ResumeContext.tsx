@@ -106,6 +106,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const updateData = (section: keyof ResumeData, data: any) => {
+    console.log(`Updating ${section}:`, data);
     dispatch({ type: "UPDATE_DATA", payload: { section, data } });
   };
 
@@ -114,6 +115,8 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const saveResume = async () => {
+    console.log("Saving resume with data:", state.resumeData);
+    
     if (user) {
       try {
         const response = await fetch('/api/resumes', {
@@ -129,9 +132,11 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         });
 
         if (response.ok) {
-          console.log("Resume saved to database successfully");
+          const result = await response.json();
+          console.log("Resume saved to database successfully:", result);
         } else {
-          console.error("Failed to save resume to database");
+          const errorText = await response.text();
+          console.error("Failed to save resume to database:", errorText);
         }
       } catch (error) {
         console.error("Error saving resume:", error);
@@ -143,6 +148,7 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
         data: state.resumeData,
         step: state.currentStep,
       });
+      console.log("Resume saved to localStorage");
     }
   };
 
@@ -188,7 +194,9 @@ export function ResumeProvider({ children }: { children: React.ReactNode }) {
 
   // Load data on mount
   useEffect(() => {
-    loadResume();
+    if (!user) {
+      loadResume();
+    }
   }, [user]);
 
   const value = {

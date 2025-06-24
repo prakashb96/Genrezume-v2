@@ -147,14 +147,19 @@ export const referenceItemSchema = z.object({
 });
 
 export const resumeDataSchema = z.object({
-  personalDetails: personalDetailsSchema,
+  personalDetails: personalDetailsSchema.optional(),
+  profileSummary: profileSummarySchema.optional(),
   education: z.array(educationItemSchema).default([]),
-  courseworkSkills: courseworkSkillsSchema,
+  coursework: z.array(z.string()).default([]),
+  courseworkSkills: courseworkSkillsSchema.optional(),
   projects: z.array(projectItemSchema).default([]),
   internships: z.array(internshipItemSchema).default([]),
-  technicalSkills: technicalSkillsSchema,
+  technicalSkills: technicalSkillsSchema.optional(),
   extracurricular: z.array(extracurricularItemSchema).default([]),
   certifications: z.array(certificationItemSchema).default([]),
+  languages: z.array(languageItemSchema).default([]),
+  hobbies: hobbiesSchema.optional(),
+  references: z.array(referenceItemSchema).default([]),
 });
 
 export const insertUserSchema = createInsertSchema(users).omit({ 
