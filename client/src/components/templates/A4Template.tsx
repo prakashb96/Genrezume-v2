@@ -5,7 +5,7 @@ interface A4TemplateProps {
 }
 
 export default function A4Template({ data }: A4TemplateProps) {
-  const { personalDetails, education, projects, courseworkSkills, technicalSkills, internships, extracurricular, certifications } = data;
+  const { personalDetails, education, projects, skills, internships, extracurricular, certifications, profileSummary, languages, hobbies, references } = data;
 
   const printStyles = {
     container: {
@@ -84,16 +84,16 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={edu.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{edu.collegeName}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{edu.institutionName || edu.collegeName}</div>
                   <div style={{ fontStyle: 'italic', fontSize: '10px' }}>
-                    {edu.degreeName} {edu.cgpa && `• CGPA: ${edu.cgpa}`}
+                    {edu.degree || edu.degreeName} {edu.fieldOfStudy && `in ${edu.fieldOfStudy}`} {edu.gpa && `• GPA: ${edu.gpa}`}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
                   <div>{edu.startDate} - {edu.endDate || "Present"}</div>
-                  {(edu.city || edu.country) && (
+                  {edu.location && (
                     <div style={{ fontStyle: 'italic' }}>
-                      {[edu.city, edu.country].filter(Boolean).join(', ')}
+                      {edu.location}
                     </div>
                   )}
                 </div>
@@ -116,42 +116,39 @@ export default function A4Template({ data }: A4TemplateProps) {
         )}
       </div>
 
-      {/* Coursework/Skills */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>COURSEWORK / SKILLS</h2>
-        {courseworkSkills?.selectedCourses && courseworkSkills.selectedCourses.length > 0 ? (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '4px 16px', 
-            fontSize: '10px' 
-          }}>
-            {courseworkSkills.selectedCourses.map((course, index) => (
-              <div key={index}>{course}</div>
-            ))}
+      {/* Profile Summary */}
+      {profileSummary?.summary && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>PROFESSIONAL SUMMARY</h2>
+          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
+            {profileSummary.summary}
           </div>
-        ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '4px 16px', 
-            fontSize: '10px' 
-          }}>
-            <div>Data Structures &</div>
-            <div>Network Security</div>
-            <div>Artificial Intelligence</div>
-            <div>Algorithms</div>
-            <div>Database Management</div>
-            <div>OOPS Concepts</div>
-            <div>Operating Systems</div>
-            <div>System (OSMD)</div>
-            <div>Web Development</div>
-            <div></div>
-            <div></div>
-            <div>Android Development</div>
+        </div>
+      )}
+
+      {/* Technical Skills */}
+      {skills && (skills.technical?.length > 0 || skills.frameworks?.length > 0 || skills.tools?.length > 0) && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>TECHNICAL SKILLS</h2>
+          <div style={{ fontSize: '10px' }}>
+            {skills.technical && skills.technical.length > 0 && (
+              <div style={{ marginBottom: '4px' }}>
+                <strong>Languages:</strong> {skills.technical.join(', ')}
+              </div>
+            )}
+            {skills.frameworks && skills.frameworks.length > 0 && (
+              <div style={{ marginBottom: '4px' }}>
+                <strong>Frameworks:</strong> {skills.frameworks.join(', ')}
+              </div>
+            )}
+            {skills.tools && skills.tools.length > 0 && (
+              <div style={{ marginBottom: '4px' }}>
+                <strong>Tools:</strong> {skills.tools.join(', ')}
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Projects */}
       <div style={printStyles.sectionContainer}>
@@ -161,11 +158,11 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={project.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2px' }}>
                 <div style={{ fontWeight: 'bold', fontSize: '11px', flex: 1 }}>
-                  {project.projectName} 
-                  {project.downloadLink && (
-                    <a href={project.downloadLink} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
+                  {project.name || project.projectName} 
+                  {project.githubUrl && (
+                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
                   )}
-                  {project.technologyStack && ` | ${project.technologyStack}`}
+                  {project.technologies && ` | ${project.technologies}`}
                 </div>
                 <div style={{ fontSize: '10px', minWidth: '80px', textAlign: 'right' }}>
                   {project.startDate || 'MM YYYY'}
@@ -221,18 +218,17 @@ export default function A4Template({ data }: A4TemplateProps) {
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 'bold', fontSize: '11px' }}>
                     {internship.companyName} 
-                    <a href={internship.companyUrl || "#"} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a>
                   </div>
-                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.roleName}</div>
+                  <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{internship.jobTitle || internship.roleName}</div>
                   <div style={{ fontSize: '10px', marginTop: '2px' }}>
                     • {internship.description || 'About the role and responsibilities carried out.'}
                   </div>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
                   <div>{internship.startDate} - {internship.endDate || "Present"}</div>
-                  {(internship.city || internship.country) && (
+                  {internship.location && (
                     <div style={{ fontStyle: 'italic' }}>
-                      {[internship.city, internship.country].filter(Boolean).join(', ')}
+                      {internship.location}
                     </div>
                   )}
                 </div>
@@ -258,93 +254,75 @@ export default function A4Template({ data }: A4TemplateProps) {
         )}
       </div>
 
-      {/* Technical Skills */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>TECHNICAL SKILLS</h2>
-        {technicalSkills ? (
-          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
-            {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <span style={{ fontWeight: 'bold' }}>Languages: </span>
-                {technicalSkills.languages.join(', ')}
-              </div>
-            )}
-            {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <span style={{ fontWeight: 'bold' }}>Developer Tools: </span>
-                {technicalSkills.developerTools.join(', ')}
-              </div>
-            )}
-            {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-              <div style={{ marginBottom: '4px' }}>
-                <span style={{ fontWeight: 'bold' }}>Technologies/Frameworks: </span>
-                {technicalSkills.technologiesFrameworks.join(', ')}
-              </div>
-            )}
-          </div>
-        ) : (
-          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
-            <div style={{ marginBottom: '4px' }}>
-              <span style={{ fontWeight: 'bold' }}>Languages: </span>
-              Python, Java, C, C++, Dart, JavaScript, SQL, NoSQL, R, XML, Go
-            </div>
-            <div style={{ marginBottom: '4px' }}>
-              <span style={{ fontWeight: 'bold' }}>Developer Tools: </span>
-              VS Code, Android Studio, DataGrip, Scienze, IntelliJ Idea Ultimate
-            </div>
-            <div style={{ marginBottom: '4px' }}>
-              <span style={{ fontWeight: 'bold' }}>Technologies/Frameworks: </span>
-              Linux, GitHub, ReactJS, Redux, NextJS, NodeJS, ExpressJS, Git, MongoDB, Flutter
-            </div>
-          </div>
-        )}
-      </div>
+
 
       {/* Extracurricular */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>EXTRACURRICULAR</h2>
-        {extracurricular && extracurricular.length > 0 ? (
-          extracurricular.map((activity, index) => (
+      {extracurricular && extracurricular.length > 0 && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>EXTRACURRICULAR</h2>
+          {extracurricular.map((activity, index) => (
             <div key={activity.id || index} style={{ marginBottom: '8px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{activity.organizationName} <span style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</span></div>
+                  <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{activity.organizationName}</div>
                   <div style={{ fontStyle: 'italic', fontSize: '10px' }}>{activity.roleName}</div>
-                  <div style={{ fontSize: '10px', marginTop: '2px' }}>
-                    • {activity.description || 'About the role and responsibilities carried out.'}
-                  </div>
+                  {activity.description && (
+                    <div style={{ fontSize: '10px', marginTop: '2px' }}>
+                      • {activity.description}
+                    </div>
+                  )}
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
                   <div>{activity.startDate} - {activity.endDate || "Present"}</div>
-                  <div style={{ fontStyle: 'italic' }}>Position</div>
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div style={{ marginBottom: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 'bold', fontSize: '11px' }}>Organization Name <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px', marginLeft: '4px' }}>🔗</a></div>
-                <div style={{ fontStyle: 'italic', fontSize: '10px' }}>Role Name</div>
-                <div style={{ fontSize: '10px', marginTop: '2px' }}>
-                  • About the role and responsibilities carried out.
-                  • Participation Certificate <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', fontSize: '10px' }}>🔗</a>
-                </div>
+          ))}
+        </div>
+      )}
+
+      {/* Languages */}
+      {languages && languages.length > 0 && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>LANGUAGES</h2>
+          <div style={{ fontSize: '10px' }}>
+            {languages.map((lang, index) => (
+              <div key={index} style={{ marginBottom: '4px' }}>
+                <strong>{lang.language}:</strong> {lang.proficiency}
               </div>
-              <div style={{ textAlign: 'right', fontSize: '10px', minWidth: '120px' }}>
-                <div>MM YYYY - MM YYYY</div>
-                <div style={{ fontStyle: 'italic' }}>Position</div>
-              </div>
-            </div>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Hobbies & Interests */}
+      {hobbies?.interests && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>INTERESTS & HOBBIES</h2>
+          <div style={{ fontSize: '10px', lineHeight: '1.4' }}>
+            {hobbies.interests}
+          </div>
+        </div>
+      )}
+
+      {/* References */}
+      {references && references.length > 0 && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>REFERENCES</h2>
+          {references.map((ref, index) => (
+            <div key={index} style={{ marginBottom: '8px' }}>
+              <div style={{ fontWeight: 'bold', fontSize: '11px' }}>{ref.name}</div>
+              <div style={{ fontSize: '10px' }}>{ref.title} at {ref.company}</div>
+              <div style={{ fontSize: '10px' }}>{ref.email} | {ref.phone}</div>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Certifications */}
-      <div style={printStyles.sectionContainer}>
-        <h2 style={printStyles.sectionHeader}>CERTIFICATIONS</h2>
-        {certifications && certifications.length > 0 ? (
+      {certifications && certifications.length > 0 && (
+        <div style={printStyles.sectionContainer}>
+          <h2 style={printStyles.sectionHeader}>CERTIFICATIONS</h2>
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(2, 1fr)', 
@@ -363,25 +341,8 @@ export default function A4Template({ data }: A4TemplateProps) {
               </div>
             ))}
           </div>
-        ) : (
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(3, 1fr)', 
-            gap: '4px 16px', 
-            fontSize: '10px' 
-          }}>
-            <div>• Java & DSA - <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>🔗</a></div>
-            <div>• SQL</div>
-            <div>• Command Line in Linux - Coursera</div>
-            <div>• Python for Data Science - KE</div>
-            <div>• MongoDB Basics</div>
-            <div>• Microsoft AI Classroom - Microsoft</div>
-            <div>• 5 Stars in C++ & SQL <a href="#" target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>🔗</a></div>
-            <div></div>
-            <div>• Node.js with Express & MongoDB - Udemy</div>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
