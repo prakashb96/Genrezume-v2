@@ -209,7 +209,11 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div key={index} style={{ marginBottom: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
                 <div style={{ fontWeight: "bold", fontSize: "11px", flex: 1 }}>
-                  {project.projectName} {project.downloadLink && "🔗"} | {project.technologyStack || "Technology Stack Used"}
+                  {project.projectName} {project.downloadLink && (
+                    <a href={project.downloadLink} style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">
+                      🔗
+                    </a>
+                  )} | {project.technologyStack || "Technology Stack Used"}
                 </div>
                 <div style={{ fontSize: "10px", minWidth: "80px", textAlign: "right" }}>
                   {project.startDate || "MM YYYY"}
@@ -230,7 +234,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div style={{ marginBottom: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
                 <div style={{ fontWeight: "bold", fontSize: "11px" }}>
-                  Project Name 🔗 | Technology Stack Used
+                  Project Name <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a> | Technology Stack Used
                 </div>
                 <div style={{ fontSize: "10px" }}>MM YYYY</div>
               </div>
@@ -241,7 +245,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div style={{ marginBottom: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
                 <div style={{ fontWeight: "bold", fontSize: "11px" }}>
-                  Project Name 🔗 | Technology Stack Used
+                  Project Name <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a> | Technology Stack Used
                 </div>
                 <div style={{ fontSize: "10px" }}>MM YYYY</div>
               </div>
@@ -252,7 +256,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div style={{ marginBottom: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2px" }}>
                 <div style={{ fontWeight: "bold", fontSize: "11px" }}>
-                  Project Name 🔗 | Technology Stack Used
+                  Project Name <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a> | Technology Stack Used
                 </div>
                 <div style={{ fontSize: "10px" }}>MM YYYY</div>
               </div>
@@ -283,7 +287,11 @@ export default function A4Template({ data }: A4TemplateProps) {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: "bold", fontSize: "11px" }}>
-                    {internship.companyName} {internship.downloadLink && "🔗"}
+                    {internship.companyName} {internship.downloadLink && (
+                      <a href={internship.downloadLink} style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">
+                        🔗
+                      </a>
+                    )}
                   </div>
                   <div style={{ fontStyle: "italic", fontSize: "10px" }}>
                     {internship.roleName}
@@ -309,7 +317,7 @@ export default function A4Template({ data }: A4TemplateProps) {
           <div style={{ marginBottom: "12px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Company Name 🔗</div>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Company Name <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a></div>
                 <div style={{ fontStyle: "italic", fontSize: "10px" }}>Role Name</div>
                 <div style={{ fontSize: "10px", marginTop: "2px" }}>
                   • About the role and responsibilities carried out.
@@ -387,7 +395,7 @@ export default function A4Template({ data }: A4TemplateProps) {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: "bold", fontSize: "11px" }}>
-                    {activity.organizationName} 🔗
+                    {activity.organizationName} <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a>
                   </div>
                   <div style={{ fontStyle: "italic", fontSize: "10px" }}>
                     {activity.roleName}
@@ -409,11 +417,11 @@ export default function A4Template({ data }: A4TemplateProps) {
           <div style={{ marginBottom: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Organization Name 🔗</div>
+                <div style={{ fontWeight: "bold", fontSize: "11px" }}>Organization Name <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a></div>
                 <div style={{ fontStyle: "italic", fontSize: "10px" }}>Role</div>
                 <div style={{ fontSize: "10px", marginTop: "2px" }}>
                   • About the role and responsibilities carried out.
-                  <br />• Participation Certificate. 🔗
+                  <br />• Participation Certificate. <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a>
                 </div>
               </div>
               <div style={{ textAlign: "right", fontSize: "10px", minWidth: "120px" }}>
@@ -447,7 +455,11 @@ export default function A4Template({ data }: A4TemplateProps) {
             {certifications.map((cert, index) => (
               <div key={index}>
                 • {cert.name} - {cert.issuer}
-                {cert.url && " 🔗"}
+                {cert.url && (
+                  <a href={cert.url} style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">
+                    🔗
+                  </a>
+                )}
               </div>
             ))}
           </div>
@@ -462,7 +474,7 @@ export default function A4Template({ data }: A4TemplateProps) {
             <div>• Java</div>
             <div>• Python for Data Science - XYZ</div>
             <div>• SQL</div>
-            <div>• 5 Stars in C++ & SQL 🔗</div>
+            <div>• 5 Stars in C++ & SQL <a href="https://example.com" style={{ color: "#0066cc", textDecoration: "none", marginLeft: "2px" }} target="_blank" rel="noopener noreferrer">🔗</a></div>
             <div>• MongoDB Basics</div>
             <div></div>
             <div>• Command Line in Linux - Coursera</div>
