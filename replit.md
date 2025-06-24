@@ -124,6 +124,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+- June 24, 2025: Updated hyperlink functionality to only use user input URLs (no defaults), made project links fully clickable
 - June 24, 2025: Created .env file with all necessary environment variables (DATABASE_URL, SESSION_SECRET, PostgreSQL credentials)
 - June 24, 2025: Fixed all code errors and database connection issues - application now running successfully
 - June 24, 2025: Completely redesigned A4Template to match user's reference template exactly - included all sections with proper formatting and alignment
