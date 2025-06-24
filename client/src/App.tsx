@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Home from "@/pages/Home";
 import Landing from "@/pages/Landing";
 import ResumeBuilder from "@/pages/ResumeBuilder";
+import Profile from "@/pages/Profile";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -21,6 +22,9 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/builder">
             <ResumeBuilder />
+          </Route>
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route path="/templates">
             <div className="min-h-screen flex items-center justify-center">

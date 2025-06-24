@@ -61,9 +61,11 @@ export default function Header() {
                       <div className="font-medium">{`${user.firstName || ""} ${user.lastName || ""}`.trim() || "User"}</div>
                       <div className="text-sm text-muted-foreground">{user.email}</div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="mr-2 h-4 w-4" />

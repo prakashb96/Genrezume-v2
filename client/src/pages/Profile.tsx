@@ -93,11 +93,16 @@ export default function Profile() {
     try {
       // Create a temporary preview element
       const tempDiv = document.createElement('div');
-      tempDiv.id = 'temp-resume-preview';
+      tempDiv.id = 'resume-preview'; // Use the same ID that usePDFExport expects
       tempDiv.style.position = 'absolute';
       tempDiv.style.left = '-9999px';
+      tempDiv.style.width = '794px';
+      tempDiv.style.maxWidth = '794px';
       tempDiv.innerHTML = generateResumeHTML(resume);
       document.body.appendChild(tempDiv);
+
+      // Wait for the element to be added to DOM
+      await new Promise(resolve => setTimeout(resolve, 100));
 
       // Export to PDF
       await exportToPDF(`${resume.title}.pdf`);
@@ -120,14 +125,89 @@ export default function Profile() {
   };
 
   const generateResumeHTML = (resume: Resume) => {
-    // This is a simplified version - you'd need to import and use your actual templates
     const data = JSON.parse(resume.data);
+    const personalDetails = data.personalDetails || {};
+    
     return `
-      <div style="font-family: Arial, sans-serif; padding: 20px; background: white;">
-        <h1>${data.personalDetails?.firstName || 'Your'} ${data.personalDetails?.lastName || 'Name'}</h1>
-        <p>${data.personalDetails?.title || 'Your Title'}</p>
-        <p>${data.personalDetails?.email || ''}</p>
-        <!-- Add more template rendering here -->
+      <div id="resume-preview" style="font-family: Inter, Arial, sans-serif; max-width: 794px; margin: 0 auto; padding: 40px; background: white; color: black; line-height: 1.6;">
+        <div style="text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2563eb; padding-bottom: 20px;">
+          <h1 style="font-size: 32px; font-weight: bold; margin: 0; color: #1e293b;">
+            ${personalDetails.firstName || 'Your'} ${personalDetails.lastName || 'Name'}
+          </h1>
+          <p style="font-size: 18px; color: #64748b; margin: 8px 0;">
+            ${personalDetails.title || 'Your Professional Title'}
+          </p>
+          <div style="font-size: 14px; color: #64748b; margin-top: 12px;">
+            ${personalDetails.email ? `Email: ${personalDetails.email}` : ''}
+            ${personalDetails.phone ? ` | Phone: ${personalDetails.phone}` : ''}
+            ${personalDetails.location ? ` | Location: ${personalDetails.location}` : ''}
+          </div>
+          <div style="font-size: 14px; color: #2563eb; margin-top: 8px;">
+            ${personalDetails.linkedin ? `<a href="${personalDetails.linkedin}" style="color: #2563eb; text-decoration: none;">LinkedIn</a>` : ''}
+            ${personalDetails.github ? ` | <a href="${personalDetails.github}" style="color: #2563eb; text-decoration: none;">GitHub</a>` : ''}
+            ${personalDetails.portfolio ? ` | <a href="${personalDetails.portfolio}" style="color: #2563eb; text-decoration: none;">Portfolio</a>` : ''}
+          </div>
+        </div>
+        
+        ${data.education && data.education.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Education</h2>
+          ${data.education.map((edu: any) => `
+            <div style="margin-bottom: 15px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${edu.institutionName || ''}</h3>
+                <span style="font-size: 14px; color: #64748b;">${edu.startDate || ''} - ${edu.endDate || ''}</span>
+              </div>
+              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">
+                ${edu.degree || ''} ${edu.fieldOfStudy ? `in ${edu.fieldOfStudy}` : ''}
+                ${edu.gpa ? ` | GPA: ${edu.gpa}` : ''}
+              </p>
+              <p style="font-size: 14px; color: #64748b; margin: 0;">${edu.location || ''}</p>
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.experience && data.experience.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Experience</h2>
+          ${data.experience.map((exp: any) => `
+            <div style="margin-bottom: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin: 0;">${exp.jobTitle || ''}</h3>
+                <span style="font-size: 14px; color: #64748b;">${exp.startDate || ''} - ${exp.endDate || 'Present'}</span>
+              </div>
+              <p style="font-size: 14px; color: #64748b; margin: 2px 0;">${exp.companyName || ''} | ${exp.location || ''}</p>
+              ${exp.description ? `<p style="font-size: 14px; margin: 8px 0;">${exp.description}</p>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.projects && data.projects.length > 0 ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Projects</h2>
+          ${data.projects.map((project: any) => `
+            <div style="margin-bottom: 15px;">
+              <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 5px 0;">${project.name || ''}</h3>
+              ${project.description ? `<p style="font-size: 14px; margin: 5px 0;">${project.description}</p>` : ''}
+              ${project.technologies ? `<p style="font-size: 13px; color: #64748b; margin: 5px 0;"><strong>Technologies:</strong> ${project.technologies}</p>` : ''}
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+
+        ${data.technicalSkills ? `
+        <div style="margin-bottom: 25px;">
+          <h2 style="font-size: 20px; font-weight: 600; color: #1e293b; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px;">Technical Skills</h2>
+          <div style="font-size: 14px; line-height: 1.6;">
+            ${data.technicalSkills.programmingLanguages ? `<p><strong>Programming Languages:</strong> ${data.technicalSkills.programmingLanguages.join(', ')}</p>` : ''}
+            ${data.technicalSkills.frameworks ? `<p><strong>Frameworks:</strong> ${data.technicalSkills.frameworks.join(', ')}</p>` : ''}
+            ${data.technicalSkills.tools ? `<p><strong>Tools:</strong> ${data.technicalSkills.tools.join(', ')}</p>` : ''}
+            ${data.technicalSkills.databases ? `<p><strong>Databases:</strong> ${data.technicalSkills.databases.join(', ')}</p>` : ''}
+          </div>
+        </div>
+        ` : ''}
       </div>
     `;
   };

@@ -16,41 +16,101 @@ export function usePDFExport() {
         height: element.style.height,
         transform: element.style.transform,
         maxWidth: element.style.maxWidth,
+        overflow: element.style.overflow,
+        position: element.style.position,
       };
 
-      // Temporarily set styles for better PDF rendering
-      element.style.width = '210mm';
-      element.style.maxWidth = '210mm';
+      // Set optimal styles for PDF rendering
+      element.style.width = '794px'; // A4 width at 96 DPI
+      element.style.maxWidth = '794px';
       element.style.transform = 'scale(1)';
       element.style.transformOrigin = 'top left';
+      element.style.overflow = 'visible';
+      element.style.position = 'relative';
 
-      // Wait for styles to apply
-      await new Promise(resolve => setTimeout(resolve, 100));
+      // Apply specific styles to prevent collapsing
+      const allElements = element.querySelectorAll('*');
+      const originalElementStyles: Map<Element, any> = new Map();
+      
+      allElements.forEach((el: Element) => {
+        const htmlEl = el as HTMLElement;
+        originalElementStyles.set(el, {
+          minHeight: htmlEl.style.minHeight,
+          height: htmlEl.style.height,
+          overflow: htmlEl.style.overflow,
+          wordBreak: htmlEl.style.wordBreak,
+          whiteSpace: htmlEl.style.whiteSpace,
+        });
+        
+        // Prevent collapsing
+        if (htmlEl.style.height !== 'auto' && !htmlEl.style.height) {
+          htmlEl.style.minHeight = '1em';
+        }
+        htmlEl.style.overflow = 'visible';
+        htmlEl.style.wordBreak = 'break-word';
+        htmlEl.style.whiteSpace = 'normal';
+      });
 
-      // Configure html2canvas with optimized settings for text clarity
+      // Wait for layout to stabilize
+      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // Configure html2canvas with optimized settings
       const canvas = await html2canvas(element, {
-        scale: 3, // Higher scale for crisp text
+        scale: 2, // Good balance of quality and performance
         useCORS: true,
         allowTaint: true,
         backgroundColor: '#ffffff',
         logging: false,
-        width: element.offsetWidth,
-        height: element.offsetHeight,
+        width: 794,
+        height: element.scrollHeight,
         scrollX: 0,
         scrollY: 0,
-        foreignObjectRendering: false, // Better text rendering
+        foreignObjectRendering: true, // Better for text and SVG
         imageTimeout: 0,
-        removeContainer: true,
+        removeContainer: false,
+        ignoreElements: (element) => {
+          // Ignore certain elements that might cause issues
+          return element.classList.contains('no-print') || 
+                 element.tagName === 'SCRIPT' || 
+                 element.tagName === 'STYLE';
+        },
         onclone: (clonedDoc) => {
-          // Ensure fonts are loaded in cloned document
           const clonedElement = clonedDoc.getElementById('resume-preview');
           if (clonedElement) {
-            clonedElement.style.fontFamily = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
-            clonedElement.style.setProperty('-webkit-font-smoothing', 'antialiased');
-            clonedElement.style.color = 'black';
-            clonedElement.style.backgroundColor = 'white';
+            // Ensure consistent font and styling
+            clonedElement.style.fontFamily = 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+            clonedElement.style.fontSize = '14px';
+            clonedElement.style.lineHeight = '1.5';
+            clonedElement.style.color = '#000000';
+            clonedElement.style.backgroundColor = '#ffffff';
+            clonedElement.style.width = '794px';
+            clonedElement.style.maxWidth = '794px';
+            
+            // Fix any collapsed elements
+            const allClonedElements = clonedElement.querySelectorAll('*');
+            allClonedElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              htmlEl.style.overflow = 'visible';
+              htmlEl.style.wordBreak = 'break-word';
+              htmlEl.style.whiteSpace = 'normal';
+              
+              // Ensure minimum heights for content areas
+              if (htmlEl.textContent && htmlEl.textContent.trim() && !htmlEl.style.height) {
+                htmlEl.style.minHeight = '1em';
+              }
+            });
           }
         },
+      });
+
+      // Restore original styles
+      Object.assign(element.style, originalStyles);
+      allElements.forEach((el: Element) => {
+        const htmlEl = el as HTMLElement;
+        const original = originalElementStyles.get(el);
+        if (original) {
+          Object.assign(htmlEl.style, original);
+        }
       });
 
       // Restore original styles
@@ -60,51 +120,68 @@ export function usePDFExport() {
       const pdfWidth = 210;
       const pdfHeight = 297;
       
-      // Calculate scaling to fit A4
-      const canvasAspectRatio = canvas.height / canvas.width;
-      const imgWidth = pdfWidth;
-      const imgHeight = imgWidth * canvasAspectRatio;
+      // Calculate optimal scaling
+      const canvasWidthMM = (canvas.width / 2) * 0.264583; // Convert pixels to mm at scale 2
+      const canvasHeightMM = (canvas.height / 2) * 0.264583;
+      
+      // Calculate scaling to fit A4 width with margins
+      const marginMM = 10; // 10mm margins on each side
+      const availableWidth = pdfWidth - (2 * marginMM);
+      const scale = availableWidth / canvasWidthMM;
+      
+      const finalWidth = canvasWidthMM * scale;
+      const finalHeight = canvasHeightMM * scale;
 
       // Create PDF with high quality settings
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
-        compress: false, // Better quality
+        compress: false,
       });
 
-      // Convert canvas to high quality image - using PNG for better text clarity
-      const imgData = canvas.toDataURL('image/png');
+      // Convert canvas to high quality image
+      const imgData = canvas.toDataURL('image/png', 1.0);
 
-      // Add image to PDF
-      if (imgHeight <= pdfHeight) {
-        // Single page
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'SLOW');
+      // Calculate how many pages we need
+      const availableHeight = pdfHeight - (2 * marginMM);
+      
+      if (finalHeight <= availableHeight) {
+        // Single page - center it
+        const yPosition = marginMM;
+        pdf.addImage(imgData, 'PNG', marginMM, yPosition, finalWidth, finalHeight, undefined, 'SLOW');
       } else {
         // Multiple pages
-        let heightLeft = imgHeight;
-        let position = 0;
+        let heightLeft = finalHeight;
+        let yOffset = 0;
+        let pageNumber = 0;
         
         while (heightLeft > 0) {
-          const pageHeight = Math.min(heightLeft, pdfHeight);
-          
-          if (position > 0) {
+          if (pageNumber > 0) {
             pdf.addPage();
           }
           
-          pdf.addImage(
-            imgData, 
-            'PNG', 
-            0, 
-            -position, 
-            imgWidth, 
-            imgHeight, 
-            undefined, 
-            'SLOW'
-          );
+          const pageHeight = Math.min(heightLeft, availableHeight);
           
-          heightLeft -= pdfHeight;
-          position += pdfHeight;
+          // Calculate source coordinates for this page
+          const sourceY = (yOffset / finalHeight) * canvas.height;
+          const sourceHeight = (pageHeight / finalHeight) * canvas.height;
+          
+          // Create a temporary canvas for this page section
+          const tempCanvas = document.createElement('canvas');
+          const tempCtx = tempCanvas.getContext('2d');
+          tempCanvas.width = canvas.width;
+          tempCanvas.height = sourceHeight;
+          
+          if (tempCtx) {
+            tempCtx.drawImage(canvas, 0, sourceY, canvas.width, sourceHeight, 0, 0, canvas.width, sourceHeight);
+            const tempImgData = tempCanvas.toDataURL('image/png', 1.0);
+            pdf.addImage(tempImgData, 'PNG', marginMM, marginMM, finalWidth, pageHeight, undefined, 'SLOW');
+          }
+          
+          heightLeft -= availableHeight;
+          yOffset += availableHeight;
+          pageNumber++;
         }
       }
 

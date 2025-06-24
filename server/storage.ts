@@ -1,10 +1,13 @@
 import {
   users,
+  resumes,
   type User,
   type UpsertUser,
+  type Resume,
+  type InsertResume,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 // Interface for storage operations
 export interface IStorage {
@@ -45,7 +48,52 @@ export class DatabaseStorage implements IStorage {
     return user;
   }
 
-  // Other operations
+  async createResume(resumeData: Omit<InsertResume, 'id'>): Promise<Resume> {
+    const result = await db
+      .insert(resumes)
+      .values(resumeData)
+      .returning();
+
+    return result[0];
+  }
+
+  async getUserResumes(userId: string): Promise<Resume[]> {
+    const result = await db
+      .select()
+      .from(resumes)
+      .where(eq(resumes.userId, userId))
+      .orderBy(desc(resumes.id));
+
+    return result;
+  }
+
+  async getResume(id: number, userId: string): Promise<Resume | undefined> {
+    const result = await db
+      .select()
+      .from(resumes)
+      .where(and(eq(resumes.id, id), eq(resumes.userId, userId)))
+      .limit(1);
+
+    return result[0];
+  }
+
+  async updateResume(id: number, userId: string, data: Partial<InsertResume>): Promise<Resume | undefined> {
+    const result = await db
+      .update(resumes)
+      .set(data)
+      .where(and(eq(resumes.id, id), eq(resumes.userId, userId)))
+      .returning();
+
+    return result[0];
+  }
+
+  async deleteResume(id: number, userId: string): Promise<boolean> {
+    const result = await db
+      .delete(resumes)
+      .where(and(eq(resumes.id, id), eq(resumes.userId, userId)));
+
+    return result.rowCount > 0;
+  }
 }
 
 export const storage = new DatabaseStorage();

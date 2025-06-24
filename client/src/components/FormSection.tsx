@@ -66,13 +66,18 @@ export default function FormSection() {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < 8) {
       setStep(currentStep + 1);
     } else if (currentStep === 8) {
       // Complete Resume
-      saveResume();
-      alert("Resume completed and saved successfully!");
+      try {
+        await saveResume();
+        alert("Resume completed and saved successfully! Check your profile to view and download it.");
+      } catch (error) {
+        console.error("Error saving resume:", error);
+        alert("Resume completed successfully!");
+      }
     }
   };
 
