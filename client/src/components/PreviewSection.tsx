@@ -21,12 +21,6 @@ export default function PreviewSection() {
   const [zoom, setZoom] = useState(75);
 
   const TemplateComponent = TEMPLATES[state.selectedTemplate as keyof typeof TEMPLATES] || ModernTemplate;
-  
-  // Debug logging
-  console.log("Preview state:", state);
-  console.log("Resume data:", state.resumeData);
-  console.log("Selected template:", state.selectedTemplate);
-  console.log("Template component:", TemplateComponent);
 
   const handleZoomIn = () => {
     setZoom(Math.min(zoom + 25, 150));
@@ -63,13 +57,7 @@ export default function PreviewSection() {
           }}
         >
           <div id="resume-preview" className="bg-white" style={{ width: "210mm", minHeight: "297mm" }}>
-            {state.resumeData ? (
-              <TemplateComponent data={state.resumeData} />
-            ) : (
-              <div style={{ padding: '20px', textAlign: 'center' }}>
-                <p>Loading resume preview...</p>
-              </div>
-            )}
+            <TemplateComponent data={state.resumeData} />
           </div>
         </div>
       </div>

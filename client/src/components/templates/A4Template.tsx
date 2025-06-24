@@ -5,10 +5,7 @@ interface A4TemplateProps {
 }
 
 export default function A4Template({ data }: A4TemplateProps) {
-  console.log("A4Template received data:", data);
-  
   if (!data) {
-    console.log("No data provided to A4Template");
     return <div style={{ padding: '20px' }}>No resume data available</div>;
   }
   

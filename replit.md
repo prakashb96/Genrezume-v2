@@ -124,11 +124,11 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-- June 24, 2025: Fixed PDF export functionality - resolved blank PDFs and download failures
+- June 24, 2025: Fixed resume preview display issues - updated A4Template with proper styling and schema mapping
+- June 24, 2025: Resolved download functionality - fixed JSON parsing errors in resume data
 - June 24, 2025: Enhanced resume data schema to include all form sections (profileSummary, coursework, languages, hobbies, references)
 - June 24, 2025: Improved profile page with comprehensive resume HTML generation for all sections
-- June 24, 2025: Added detailed logging for resume save/load operations to troubleshoot data persistence
-- June 24, 2025: Updated ModernTemplate to display all resume sections including new fields
+- June 24, 2025: Updated database schema with timestamp fields for resumes table
 - June 24, 2025: Implemented Google authentication through Replit's secure OAuth system
 - June 24, 2025: Migrated from Firebase to PostgreSQL database with Drizzle ORM
 - June 24, 2025: Updated authentication flow with session-based management

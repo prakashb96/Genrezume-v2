@@ -15,14 +15,14 @@ function Router() {
 
   return (
     <Switch>
-      <Route path="/builder">
-        <ResumeBuilder />
-      </Route>
       {isLoading || !isAuthenticated ? (
         <Route path="/" component={Landing} />
       ) : (
         <>
           <Route path="/" component={Home} />
+          <Route path="/builder">
+            <ResumeBuilder />
+          </Route>
           <Route path="/profile">
             <Profile />
           </Route>

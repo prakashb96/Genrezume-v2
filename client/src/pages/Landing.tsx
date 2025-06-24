@@ -15,18 +15,9 @@ export default function Landing() {
             <FileText className="h-8 w-8 text-blue-600" />
             <span className="text-2xl font-bold text-gray-900">Genrezume</span>
           </div>
-          <div className="flex items-center space-x-4">
-            <Button 
-              onClick={() => window.location.href = '/builder'} 
-              variant="outline" 
-              className="border-blue-600 text-blue-600 hover:bg-blue-50"
-            >
-              Try Demo
-            </Button>
-            <Button onClick={handleLogin} className="bg-blue-600 hover:bg-blue-700">
-              Sign In
-            </Button>
-          </div>
+          <Button onClick={handleLogin} className="bg-blue-600 hover:bg-blue-700">
+            Sign In
+          </Button>
         </div>
       </header>
 
