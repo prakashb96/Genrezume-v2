@@ -329,38 +329,84 @@ export default function A4Template({ data }: A4TemplateProps) {
         )}
       </div>
 
-      {/* Technical Skills - Separate Section */}
-      {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) && (
-        <div style={{ marginBottom: "18px" }}>
-          <h2 style={{ 
-            fontSize: "12px", 
-            fontWeight: "bold", 
-            marginBottom: "8px",
-            textTransform: "uppercase",
-            borderBottom: "1px solid #000",
-            paddingBottom: "2px"
+      {/* Technical Skills - Always Show Section */}
+      <div style={{ marginBottom: "18px" }}>
+        <h2 style={{ 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          marginBottom: "8px",
+          textTransform: "uppercase",
+          borderBottom: "1px solid #000",
+          paddingBottom: "2px"
+        }}>
+          TECHNICAL SKILLS
+        </h2>
+        {technicalSkills && (technicalSkills.languages?.length > 0 || technicalSkills.technologiesFrameworks?.length > 0 || technicalSkills.developerTools?.length > 0) ? (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(3, 1fr)", 
+            gap: "8px 15px", 
+            fontSize: "10px",
+            lineHeight: "1.3"
           }}>
-            TECHNICAL SKILLS
-          </h2>
-          <div style={{ fontSize: "10px", lineHeight: "1.4" }}>
             {technicalSkills.languages && technicalSkills.languages.length > 0 && (
-              <div style={{ marginBottom: "6px" }}>
-                <strong>Languages:</strong> {technicalSkills.languages.join(", ")}
+              <div>
+                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Languages:</div>
+                {technicalSkills.languages.map((lang, index) => (
+                  <div key={index} style={{ marginBottom: "2px" }}>• {lang}</div>
+                ))}
               </div>
             )}
             {technicalSkills.technologiesFrameworks && technicalSkills.technologiesFrameworks.length > 0 && (
-              <div style={{ marginBottom: "6px" }}>
-                <strong>Technologies:</strong> {technicalSkills.technologiesFrameworks.join(", ")}
+              <div>
+                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Technologies:</div>
+                {technicalSkills.technologiesFrameworks.map((tech, index) => (
+                  <div key={index} style={{ marginBottom: "2px" }}>• {tech}</div>
+                ))}
               </div>
             )}
             {technicalSkills.developerTools && technicalSkills.developerTools.length > 0 && (
-              <div style={{ marginBottom: "6px" }}>
-                <strong>Developer Tools:</strong> {technicalSkills.developerTools.join(", ")}
+              <div>
+                <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Developer Tools:</div>
+                {technicalSkills.developerTools.map((tool, index) => (
+                  <div key={index} style={{ marginBottom: "2px" }}>• {tool}</div>
+                ))}
               </div>
             )}
           </div>
-        </div>
-      )}
+        ) : (
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(3, 1fr)", 
+            gap: "8px 15px", 
+            fontSize: "10px",
+            lineHeight: "1.3"
+          }}>
+            <div>
+              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Languages:</div>
+              <div style={{ marginBottom: "2px" }}>• Python, Java, C, C++</div>
+              <div style={{ marginBottom: "2px" }}>• Dart, JavaScript, SQL</div>
+              <div style={{ marginBottom: "2px" }}>• NoSQL, R, XML, Go</div>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Technologies:</div>
+              <div style={{ marginBottom: "2px" }}>• React, Flutter, Firebase</div>
+              <div style={{ marginBottom: "2px" }}>• Node.js, ReactJS, Git</div>
+              <div style={{ marginBottom: "2px" }}>• Mongo, Flutter</div>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold", marginBottom: "4px" }}>Developer Tools:</div>
+              <div style={{ marginBottom: "2px" }}>• Network Security</div>
+              <div style={{ marginBottom: "2px" }}>• Database Management</div>
+              <div style={{ marginBottom: "2px" }}>• System (DBMS)</div>
+              <div style={{ marginBottom: "2px" }}>• Artificial Intelligence</div>
+              <div style={{ marginBottom: "2px" }}>• OOPS Concept</div>
+              <div style={{ marginBottom: "2px" }}>• Web Development</div>
+              <div style={{ marginBottom: "2px" }}>• Android Development</div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Extracurricular - Always Show Section */}
       <div style={{ marginBottom: "18px" }}>
