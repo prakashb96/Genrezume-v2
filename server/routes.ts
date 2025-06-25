@@ -1,32 +1,42 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+
+// Local development authentication
+const mockUser = {
+  id: 'local-dev-user-123',
+  email: 'dev@localhost.com',
+  firstName: 'Local',
+  lastName: 'Developer',
+  profileImageUrl: null
+};
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+  // Local auth routes
+  app.get('/api/login', async (req, res) => {
+    // For local development, automatically "log in" the user
+    await storage.upsertUser(mockUser);
+    res.redirect('/');
+  });
 
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/auth/user', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
+      // For local development, always return the mock user
+      const user = await storage.getUser(mockUser.id);
+      res.json(user || mockUser);
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
   });
 
-  // Resume routes
-  app.post('/api/resumes', isAuthenticated, async (req: any, res) => {
+  // Resume routes - no auth check needed for local development
+  app.post('/api/resumes', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
       const { title, template, data } = req.body;
       
       const resume = await storage.createResume({
-        userId,
+        userId: mockUser.id,
         title: title || 'My Resume',
         template: template || 'modern',
         data: JSON.stringify(data || {}),
@@ -40,10 +50,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/resumes', isAuthenticated, async (req: any, res) => {
+  app.get('/api/resumes', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const resumes = await storage.getUserResumes(userId);
+      const resumes = await storage.getUserResumes(mockUser.id);
       res.json(resumes);
     } catch (error) {
       console.error("Error fetching resumes:", error);
@@ -51,11 +60,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get('/api/resumes/:id', isAuthenticated, async (req: any, res) => {
+  app.get('/api/resumes/:id', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
       const resumeId = parseInt(req.params.id);
-      const resume = await storage.getResume(resumeId, userId);
+      const resume = await storage.getResume(resumeId, mockUser.id);
       
       if (!resume) {
         return res.status(404).json({ message: "Resume not found" });
@@ -68,13 +76,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/resumes/:id', isAuthenticated, async (req: any, res) => {
+  app.put('/api/resumes/:id', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
       const resumeId = parseInt(req.params.id);
       const { title, template, data } = req.body;
       
-      const resume = await storage.updateResume(resumeId, userId, {
+      const resume = await storage.updateResume(resumeId, mockUser.id, {
         title,
         template,
         data: JSON.stringify(data)
@@ -91,12 +98,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/resumes/:id', isAuthenticated, async (req: any, res) => {
+  app.delete('/api/resumes/:id', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
       const resumeId = parseInt(req.params.id);
       
-      const success = await storage.deleteResume(resumeId, userId);
+      const success = await storage.deleteResume(resumeId, mockUser.id);
       
       if (!success) {
         return res.status(404).json({ message: "Resume not found" });
